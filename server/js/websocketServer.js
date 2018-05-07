@@ -94,6 +94,7 @@ websocketServer.on('request', request => {
   });
 
   connection.on('error', err => {
+    
   });
 
   // On assigne un ID à cette connexion, et la stocke dans la liste
@@ -104,7 +105,7 @@ websocketServer.on('request', request => {
 
   // Et on lui envoie les données initiales
   connection.sendCustom({
-    request: 'initialInfos',
+    type: 'initialInfos',
     data: {
       clientId: connection.clientId,
       clientIP: connection.clientIP,

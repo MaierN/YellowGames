@@ -10,6 +10,9 @@ class App extends Component {
 
     this.infos = {};
 
+    this.subscribeId = 0;
+    this.subscriptions = {};
+
     this.sendData = this.sendData.bind(this);
 
     this.init();
@@ -18,6 +21,34 @@ class App extends Component {
   init() {
     const self = this;
 
+    self.subscribe("debug", msg => {
+      switch(msg.request) {
+        case 'log':
+        console.log(data);
+        break;
+        case 'error':
+        console.error(data.msg);
+        alert("Error (f12 to see details)");
+        break;
+      }
+    });
+
+    self.subscribe("initialInfos", msg => {
+      self.infos = msg.data;
+      self.setState({loaded: true});
+    });
+
+    self.subscribe("login", msg => {
+      switch(msg.request) {
+        case 'loginSuccess':
+        console.log("oui");
+        break;
+        case 'loginFailed':
+        console.log("non");
+        break;
+      }
+    });
+
     self.ws = new WebSocket('ws://' + window.location.host.split(":")[0]);
 
     self.ws.sendCustom = function(data) {
@@ -25,38 +56,13 @@ class App extends Component {
     };
 
     self.ws.onopen = function(e) {
-
     };
 
     self.ws.onmessage = function(e) {
       const messageData = JSON.parse(e.data);
 
-      const data = messageData.data;
-
-      switch(messageData.request) {
-        case 'initialInfos':
-        self.infos = data;
-        self.setState({loaded: true});
-        break;
-        case 'loginSuccess':
-        console.log("oui");
-        break;
-        case 'loginFailed':
-        console.log("non");
-        break;
-
-        // Outils de debug
-        case 'console.log':
-        console.log(data);
-        break;
-        case 'error':
-        console.error(data.msg);
-        alert("Error (f12 to see details)");
-        break;
-        default:
-        console.log("Message websocket non géré : " + messageData.request);
-        break;
-      }
+      if (subscriptions[messageData.type])
+        for (let cb in subscriptions[messageData.type]) cb(messageData);
     };
 
     self.ws.onerror = function(e) {
@@ -70,13 +76,19 @@ class App extends Component {
   }
 
   sendData(data) {
-    if (this.ws) {
+    if (this.ws && this.state.loaded) {
       this.ws.sendCustom(data);
     }
   }
 
-  tryUpdate() {
-    this.setState(this.tempState);
+  subscribe(type, callback) {
+    if (!subscriptions[type]) subscriptions[type] = {};
+    subscriptions[type][this.subscribeId] = callback;
+    return this.subscribeId++;
+  }
+
+  unsubscribe(type, id) {
+    if (subscriptions[type] && subscriptions[type][id]) delete subscriptions[type][id];
   }
 
   render() {
