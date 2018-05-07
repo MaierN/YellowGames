@@ -3,7 +3,6 @@ const fs = require('fs');
 const http = require('http');
 
 
-
 // Création du serveur HTTP, avec une fonction callback appelée en cas de requête
 const server = http.createServer((req, res) => {
 
