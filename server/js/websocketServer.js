@@ -60,7 +60,7 @@ websocketServer.on('request', request => {
   // Ajoute la fonction sendCustom à la connexion, qui est un raccourci permettant de stringifier et d'envoyer un objet
   connection.sendCustom = data => {
     try {
-      connection.sendUTF(JSON.stringify([data]));
+      connection.sendUTF(JSON.stringify(data));
     } catch(e) {}
   };
 
@@ -68,41 +68,22 @@ websocketServer.on('request', request => {
   connection.on('message', message => {
 
     // On tente de récupérer le contenu du message
-    let messagesList;
+    let messageData;
     try {
-      messagesList = JSON.parse(message.utf8Data);
+      messageData = JSON.parse(message.utf8Data);
     } catch (e) {
       // En cas d'échec, on ferme la connexion
       connection.close();
       return;
     }
 
-    for (let i = 0; i < messagesList.length; i++) {
-      const messageData = messagesList[i];
-      const data = messageData.data;
+    const data = messageData.data;
 
-      switch(messageData.request) {
-        // Démarrage du programme sur un robot
-        case 'systemStartProgram':
-        sshClient.startEurobot(data.peerId);
-        break;
-        // Interruption du programme sur un robot
-        case 'systemInterruptProgram':
-        sshClient.interruptEurobot(data.peerId);
-        break;
-        // Kill du programme sur un robot
-        case 'systemKillProgram':
-        sshClient.killEurobot(data.peerId);
-        break;
-        // Arrêt du système d'un robot
-        case 'systemShutdown':
-        sshClient.shutdownRobot(data.peerId);
-        break;
-        // Redémarrage du système d'un robot
-        case 'systemReboot':
-        sshClient.rebootRobot(data.peerId);
-        break;
-      }
+    switch(messageData.request) {
+      // Demande de login
+      case 'login':
+      console.log("Login ?");
+      break;
     }
   });
 
@@ -121,9 +102,9 @@ websocketServer.on('request', request => {
   nextClientId++;
   connection.clientIP = request.socket.remoteAddress.split("::ffff:").join("");
 
-  // Et on lui envoie l'état actuel
+  // Et on lui envoie les données initiales
   connection.sendCustom({
-    request: 'initialState',
+    request: 'initialInfos',
     data: {
       clientId: connection.clientId,
       clientIP: connection.clientIP,
