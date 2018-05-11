@@ -82,7 +82,31 @@ websocketServer.on('request', request => {
     switch(messageData.request) {
       // Demande de login
       case 'login':
-      console.log("Login ?");
+      if (connection.loggedIn) return;
+      let valid = true;
+      if (typeof data.username !== "string") valid = false;
+      if (data.username.length < 4 || data.username.length > 20) valid = false;
+      for (let clientId in connectedClients) {
+        if (connectedClients[clientId].loggedIn === data.username) {
+          valid = false;
+          break;
+        }
+      }
+      if (valid) {
+        connection.sendCustom({
+          type: 'login',
+          request: 'loginSuccess',
+          data: {
+            username: data.username
+          }
+        });
+        connection.loggedIn = data.username;
+      } else {
+        connection.sendCustom({
+          type: 'login',
+          request: 'loginFailed'
+        });
+      }
       break;
     }
   });
@@ -94,7 +118,7 @@ websocketServer.on('request', request => {
   });
 
   connection.on('error', err => {
-    
+
   });
 
   // On assigne un ID à cette connexion, et la stocke dans la liste
@@ -107,7 +131,7 @@ websocketServer.on('request', request => {
   connection.sendCustom({
     type: 'initialInfos',
     data: {
-      clientId: connection.clientId,
+      //clientId: connection.clientId,
       clientIP: connection.clientIP,
     }
   });

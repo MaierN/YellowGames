@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Login from '../views/Login/Login.jsx';
+import GamesList from '../views/GamesList/GamesList.jsx';
 import './App.css';
 
 import wsMgr from '../../js/wsMgr.js';
@@ -8,14 +9,17 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      loaded: false,
+      loggedIn: null,
+    };
 
     this.infos = {};
 
     const self = this;
 
     wsMgr.setOnClose(() => {
-      self.setState({loaded: false});
+      self.setState({loaded: false, loggedIn: null});
       self.infos = {};
     });
 
@@ -33,18 +37,15 @@ class App extends Component {
       }
     });
 
-    wsMgr.subscribe("initialInfos", msg => {
+    this.initialInfosSubscription = wsMgr.subscribe("initialInfos", msg => {
       self.infos = msg.data;
       self.setState({loaded: true});
     });
 
-    wsMgr.subscribe("login", msg => {
+    this.loginSubscription = wsMgr.subscribe("login", msg => {
       switch(msg.request) {
         case 'loginSuccess':
-        console.log("oui");
-        break;
-        case 'loginFailed':
-        console.log("non");
+        this.setState({loggedIn: msg.data.username});
         break;
         default:
         break;
@@ -52,8 +53,13 @@ class App extends Component {
     });
   }
 
+  componentWillUnmount() {
+    wsMgr.unsubscribe(this.initialInfosSubscription);
+    wsMgr.unsubscribe(this.loginSubscription);
+  }
+
   render() {
-    const {loaded, logged} = this.state;
+    const {loaded, loggedIn} = this.state;
 
     if (!loaded) return (
       <div className="loader-container">
@@ -64,12 +70,12 @@ class App extends Component {
       </div>
     );
 
-    if (!logged) return (
-      <Login sendData={this.sendData}></Login>
+    if (!loggedIn) return (
+      <Login></Login>
     );
 
     return (
-      <div>Salut !</div>
+      <GamesList loggedIn={loggedIn}></GamesList>
     );
   }
 }
