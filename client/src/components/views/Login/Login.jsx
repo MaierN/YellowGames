@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './Login.css';
 
 import wsMgr from '../../../js/wsMgr.js';
 

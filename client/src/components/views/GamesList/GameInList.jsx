@@ -1,19 +1,52 @@
 import React, { Component } from 'react';
 
+import PlayerSelect from './PlayerSelect.jsx';
+
 class GameInList extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showPlayerSelect: false,
+    };
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(e) {
+    e.preventDefault();
+    this.setState({showPlayerSelect: true});
+  }
+
   render() {
-    const {name, description, image} = this.props;
+    const {title, name, description, image} = this.props;
+    const {showPlayerSelect} = this.state;
 
     return (
-      <div>
-        {image}
-        <br/>
-        {name}
-        <br/>
-        {description}
+      <div onClick={this.handleClick} style={styles.mainContainer}>
+        <div><img src={image} alt="" style={styles.img}/></div>
+        <div>
+          <div>{title}</div>
+          <div>{description}</div>
+        </div>
+        {!showPlayerSelect ? null : (
+          <PlayerSelect title={title} name={name}></PlayerSelect>
+        )}
       </div>
     );
   }
 }
+
+const styles = {
+  mainContainer: {
+    display: "flex",
+    margin: "15px",
+    cursor: "pointer",
+    border: "1px solid black",
+  },
+  img: {
+    width: "50px",
+  },
+};
 
 export default GameInList;

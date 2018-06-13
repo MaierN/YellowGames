@@ -108,6 +108,21 @@ websocketServer.on('request', request => {
         });
       }
       break;
+
+      // Demande d'envoyer la liste des joueurs
+      case 'startSendPlayers':
+      connection.sendPlayers = true;
+      connection.sendCustom({
+        type: 'players',
+        request: 'initialPlayers',
+        data: {salut: "oui"}
+      });
+      break;
+
+      // Demande de stopper l'envoi de la liste des joueurs
+      case 'stopSendPlayers':
+      connection.sendPlayers = false;
+      break;
     }
   });
 

@@ -23,7 +23,7 @@ class App extends Component {
       self.infos = {};
     });
 
-    wsMgr.subscribe("debug", msg => {
+    this.debugSubscription = wsMgr.subscribe("debug", msg => {
       switch(msg.request) {
         case 'log':
         console.log(msg.data);
@@ -54,6 +54,7 @@ class App extends Component {
   }
 
   componentWillUnmount() {
+    wsMgr.unsubscribe(this.resetSubscription);
     wsMgr.unsubscribe(this.initialInfosSubscription);
     wsMgr.unsubscribe(this.loginSubscription);
   }
