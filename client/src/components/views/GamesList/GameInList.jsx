@@ -11,11 +11,16 @@ class GameInList extends Component {
     };
 
     this.handleClick = this.handleClick.bind(this);
+    this.handleClosePlayerSelect = this.handleClosePlayerSelect.bind(this);
   }
 
   handleClick(e) {
     e.preventDefault();
     this.setState({showPlayerSelect: true});
+  }
+
+  handleClosePlayerSelect() {
+    this.setState({showPlayerSelect: false});
   }
 
   render() {
@@ -30,7 +35,7 @@ class GameInList extends Component {
           <div>{description}</div>
         </div>
         {!showPlayerSelect ? null : (
-          <PlayerSelect title={title} name={name}></PlayerSelect>
+          <PlayerSelect title={title} name={name} onClose={this.handleClosePlayerSelect}></PlayerSelect>
         )}
       </div>
     );

@@ -17,8 +17,18 @@ function init() {
   ws.onmessage = function(e) {
     const messageData = JSON.parse(e.data);
 
-    if (subscriptions[messageData.type])
-      for (let subscriptionId in subscriptions[messageData.type]) subscriptions[messageData.type][subscriptionId](messageData);
+    let received = false;
+    if (subscriptions[messageData.type]) {
+      for (let subscriptionId in subscriptions[messageData.type]) {
+        subscriptions[messageData.type][subscriptionId](messageData);
+        received = true;
+      }
+    }
+
+    if (!received) {
+      console.log("Msg not used:");
+      console.log(messageData);
+    }
   };
 
   ws.onerror = function(e) {
@@ -48,6 +58,7 @@ function subscribe(type, callback) {
 
 function unsubscribe(type, id) {
   if (subscriptions[type] && subscriptions[type][id]) delete subscriptions[type][id];
+  else console.log("Error unsubscribe unknown subscription");
 }
 
 init();

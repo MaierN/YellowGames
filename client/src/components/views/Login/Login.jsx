@@ -27,7 +27,7 @@ class Login extends Component {
   }
 
   componentWillUnmount() {
-    wsMgr.unsubscribe(this.loginSubscription);
+    wsMgr.unsubscribe("login", this.loginSubscription);
   }
 
   handleSubmit(e) {

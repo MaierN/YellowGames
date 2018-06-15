@@ -6,39 +6,101 @@ class PlayerSelect extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      players: {},
+      waitingAnswer: null,
+    };
 
-    this.handleClick = this.handleClick.bind(this);
+    this.handleClickBackground = this.handleClickBackground.bind(this);
+    this.handleClickPlayer = this.handleClickPlayer.bind(this);
   }
 
   componentDidMount() {
     this.playersSubscription = wsMgr.subscribe("players", msg => {
-      console.log(msg);
+      let newPlayers = {...this.state.players};
+      switch(msg.request) {
+        case 'initialPlayers':
+        newPlayers = msg.data;
+        break;
+
+        case 'addPlayer':
+        newPlayers[msg.data.id] = msg.data;
+        break;
+
+        case 'removePlayer':
+        delete newPlayers[msg.data.id];
+        break;
+
+        default:
+        break;
+      }
+      this.setState({players: newPlayers});
     });
+
+    this.waitMatchSubscription = wsMgr.subscribe("waitMatch", msg => {
+      switch(msg.request) {
+        case 'startWaiting':
+        this.setState({waitingAnswer: msg.data.username});
+        break;
+
+        case 'stopWaiting':
+        this.setState({waitingAnswer: null});
+        break;
+
+        default:
+        break;
+      }
+    });
+
     wsMgr.sendData({
       request: "startSendPlayers",
     });
   }
 
   componentWillUnmount() {
-    wsMgr.unsubscribe(this.playersSubscription);
+    wsMgr.unsubscribe("players", this.playersSubscription);
+    wsMgr.unsubscribe("waitMatch", this.waitMatchSubscription);
     wsMgr.sendData({
       request: "stopSendPlayers",
     });
   }
 
-  handleClick(e) {
+  handleClickBackground(e) {
     e.preventDefault();
-    console.log("oui");
+    e.stopPropagation();
+    this.props.onClose();
+  }
+
+  handleClickPlayer(e, id) {
+    const { name } = this.props;
+
+    wsMgr.sendData({
+      request: "askGame",
+      data: { id, name }
+    });
   }
 
   render() {
-    const {title} = this.props;
+    const { title } = this.props;
+    const { players, waitingAnswer } = this.state;
+
+    const playersList = [];
+    for (let id in players) {
+      playersList.push(<div key={id} style={styles.player} onClick={e => this.handleClickPlayer(e, id)}>{players[id].username}</div>);
+    }
 
     return (
-      <div style={styles.mainContainer}>
-        <div style={styles.subContainer}>
+      <div style={styles.mainContainer} onClick={this.handleClickBackground}>
+        <div style={styles.subContainer} onClick={e => {e.stopPropagation();}}>
           <div>Chose an opponent to play {title}:</div>
+          {waitingAnswer ? (
+            <div>
+              <div>Waiting answer from {waitingAnswer}...</div>
+              <div><button>Annuler</button></div>
+            </div>
+          ) : playersList.length ? playersList : (
+            <div>No players connected :(</div>
+          )}
         </div>
       </div>
     );
@@ -53,12 +115,16 @@ const styles = {
     bottom: "0px",
     right: "0px",
     backgroundColor: "rgba(0,0,0,.5)",
-    cursor: "auto",
+    cursor: "pointer",
   },
   subContainer: {
     margin: "50px",
     backgroundColor: "white",
     border: "1px solid black",
+    cursor: "auto",
+  },
+  player: {
+    cursor: "pointer",
   },
 };
 

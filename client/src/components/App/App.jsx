@@ -54,9 +54,9 @@ class App extends Component {
   }
 
   componentWillUnmount() {
-    wsMgr.unsubscribe(this.resetSubscription);
-    wsMgr.unsubscribe(this.initialInfosSubscription);
-    wsMgr.unsubscribe(this.loginSubscription);
+    wsMgr.unsubscribe("debug", this.resetSubscription);
+    wsMgr.unsubscribe("initialInfos", this.initialInfosSubscription);
+    wsMgr.unsubscribe("login", this.loginSubscription);
   }
 
   render() {

@@ -93,6 +93,15 @@ websocketServer.on('request', request => {
         }
       }
       if (valid) {
+        for (let clientId in connectedClients) {
+          if (connectedClients[clientId].sendPlayers) {
+            connectedClients[clientId].sendCustom({
+              type: 'players',
+              request: 'addPlayer',
+              data: {id: connection.clientId, username: data.username}
+            });
+          }
+        }
         connection.sendCustom({
           type: 'login',
           request: 'loginSuccess',
@@ -111,17 +120,31 @@ websocketServer.on('request', request => {
 
       // Demande d'envoyer la liste des joueurs
       case 'startSendPlayers':
+      if (!connection.loggedIn) return;
       connection.sendPlayers = true;
+      const availablePlayers = {};
+      for (let clientId in connectedClients) {
+        if (connectedClients[clientId].loggedIn && connectedClients[clientId].loggedIn !== connection.loggedIn) {
+          availablePlayers[clientId] = {id: clientId, username: connectedClients[clientId].loggedIn}
+          // TODO ne pas ajouter les joueurs déjà dans une partie
+        }
+      }
       connection.sendCustom({
         type: 'players',
         request: 'initialPlayers',
-        data: {salut: "oui"}
+        data: availablePlayers
       });
       break;
 
       // Demande de stopper l'envoi de la liste des joueurs
       case 'stopSendPlayers':
       connection.sendPlayers = false;
+      break;
+
+      // Demande une partie
+      case 'askGame':
+      if (!connection.loggedIn) return;
+      
       break;
     }
   });
@@ -130,6 +153,15 @@ websocketServer.on('request', request => {
   connection.on('close', (reasonCode, description) => {
     // On retire la connexion de la liste
     delete connectedClients[connection.clientId];
+    for (let clientId in connectedClients) {
+      if (connectedClients[clientId].sendPlayers) {
+        connectedClients[clientId].sendCustom({
+          type: 'players',
+          request: 'removePlayer',
+          data: {id: connection.clientId}
+        });
+      }
+    }
   });
 
   connection.on('error', err => {
