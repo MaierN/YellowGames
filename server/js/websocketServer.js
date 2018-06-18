@@ -3,6 +3,13 @@ const fs = require('fs');
 
 const WebSocketServer = require('websocket').server;
 
+const games = {
+  TicTacToe: "Tic Tac Toe",
+  Battleship: "Battleship",
+};
+
+const playStates = {};
+
 
 // Objet contenant les clients connectés (les objets connection)
 const connectedClients = {};
@@ -41,7 +48,28 @@ module.exports = {
 const httpServer = require('./httpServer.js');
 const log = require('./log.js');
 const config = require('./config.js');
+const tictactoe = require('./tictactoe.js');
 
+
+function updatePlayer(id, isAdd) {
+  id = id.toString();
+  for (let clientId in connectedClients) {
+    if (connectedClients[clientId].sendPlayers && clientId !== id) {
+      if (isAdd)
+        connectedClients[clientId].sendCustom({
+          type: 'players',
+          request: 'addPlayer',
+          data: {id, username: connectedClients[id].loggedIn}
+        });
+      else
+        connectedClients[clientId].sendCustom({
+          type: 'players',
+          request: 'removePlayer',
+          data: {id}
+        });
+    }
+  }
+}
 
 // Création du serveur websocket
 const websocketServer = new WebSocketServer({
@@ -93,15 +121,8 @@ websocketServer.on('request', request => {
         }
       }
       if (valid) {
-        for (let clientId in connectedClients) {
-          if (connectedClients[clientId].sendPlayers) {
-            connectedClients[clientId].sendCustom({
-              type: 'players',
-              request: 'addPlayer',
-              data: {id: connection.clientId, username: data.username}
-            });
-          }
-        }
+        connection.loggedIn = data.username;
+        updatePlayer(connection.clientId, true);
         connection.sendCustom({
           type: 'login',
           request: 'loginSuccess',
@@ -109,7 +130,6 @@ websocketServer.on('request', request => {
             username: data.username
           }
         });
-        connection.loggedIn = data.username;
       } else {
         connection.sendCustom({
           type: 'login',
@@ -124,15 +144,14 @@ websocketServer.on('request', request => {
       connection.sendPlayers = true;
       const availablePlayers = {};
       for (let clientId in connectedClients) {
-        if (connectedClients[clientId].loggedIn && connectedClients[clientId].loggedIn !== connection.loggedIn) {
+        if (connectedClients[clientId].loggedIn && connectedClients[clientId].loggedIn !== connection.loggedIn && connectedClients[clientId].gameState === 0) {
           availablePlayers[clientId] = {id: clientId, username: connectedClients[clientId].loggedIn}
-          // TODO ne pas ajouter les joueurs déjà dans une partie
         }
       }
       connection.sendCustom({
         type: 'players',
         request: 'initialPlayers',
-        data: availablePlayers
+        data: availablePlayers,
       });
       break;
 
@@ -144,24 +163,179 @@ websocketServer.on('request', request => {
       // Demande une partie
       case 'askGame':
       if (!connection.loggedIn) return;
-      
+      if (connection.gameState !== 0) return;
+      if (!connectedClients[data.id] || connectedClients[data.id].gameState !== 0) return;
+      if (!games[data.name]) return;
+      connectedClients[data.id].gameState = -2;
+      connection.gameState = -1;
+      connectedClients[data.id].askGameEnnemy = connection.clientId;
+      connection.askGameEnnemy = data.id;
+      connectedClients[data.id].askGameName = data.name;
+      connection.sendCustom({
+        type: 'waitMatch',
+        request: 'startWaiting',
+        data: {
+          username: connectedClients[data.id].loggedIn,
+        },
+      });
+      connectedClients[data.id].sendCustom({
+        type: 'requestMatch',
+        request: 'startRequest',
+        data: {
+          username: connection.loggedIn,
+          title: games[data.name],
+        },
+      });
+      updatePlayer(connection.clientId, false);
+      updatePlayer(data.id, false);
+      break;
+
+      // Annule la demande de partie
+      case 'cancelAskGame':
+      if (!connection.loggedIn) return;
+      if (connection.gameState !== -1) return;
+      connectedClients[connection.askGameEnnemy].sendCustom({
+        type: 'requestMatch',
+        request: 'stopRequest',
+      });
+      connection.sendCustom({
+        type: 'waitMatch',
+        request: 'stopWaiting',
+      });
+      connectedClients[connection.askGameEnnemy].gameState = 0;
+      connection.gameState = 0;
+      updatePlayer(connection.clientId, true);
+      updatePlayer(connection.askGameEnnemy, true);
+      break;
+
+      // Accepte la demande de partie
+      case 'acceptRequest':
+      if (!connection.loggedIn) return;
+      if (connection.gameState !== -2) return;
+      connection.gameState = connection.askGameName;
+      connectedClients[connection.askGameEnnemy].gameState = connection.askGameName;
+      connectedClients[connection.askGameEnnemy].sendCustom({
+        type: 'game',
+        request: 'create',
+        data: {
+          username: connection.loggedIn,
+          name: connection.askGameName,
+        }
+      });
+      connection.sendCustom({
+        type: 'game',
+        request: 'create',
+        data: {
+          username: connectedClients[connection.askGameEnnemy].loggedIn,
+          name: connection.askGameName,
+        }
+      });
+
+      const playState = {name: connection.askGameName};
+
+      switch (connection.askGameName) {
+        case 'TicTacToe':
+        playState.grid = [
+          ["", "", ""],
+          ["", "", ""],
+          ["", "", ""],
+        ];
+        playState.x = connection;
+        playState.o = connectedClients[connection.askGameEnnemy];
+        playstate.next = "x";
+        break;
+
+        case 'Battleship':
+
+        break;
+      }
+
+      playStates[connection.clientId] = playState;
+      playStates[connection.askGameEnnemy] = playState;
+      break;
+
+      // Décline la demande de partie
+      case 'declineRequest':
+      if (!connection.loggedIn) return;
+      if (connection.gameState !== -2) return;
+      connectedClients[connection.askGameEnnemy].sendCustom({
+        type: 'waitMatch',
+        request: 'stopWaiting',
+      });
+      connection.sendCustom({
+        type: 'requestMatch',
+        request: 'stopRequest',
+      });
+      connection.gameState = 0;
+      connectedClients[connection.askGameEnnemy].gameState = 0;
+      updatePlayer(connection.clientId, true);
+      updatePlayer(connection.askGameEnnemy, true);
+      break;
+
+      // Abandonne la partie
+      case 'giveUp':
+      if (!connection.loggedIn) return;
+      if (!games[connection.gameState]) return;
+      connection.gameState += "_1";
+      connectedClients[connection.askGameEnnemy].gameState += "_1";
+      connectedClients[connection.askGameEnnemy].sendCustom({
+        type: 'game',
+        request: 'victory',
+      });
+      connection.sendCustom({
+        type: 'game',
+        request: 'defeat',
+      });
+      break;
+
+      case 'endGame':
+      if (!connection.loggedIn) return;
+      if (typeof connection.gameState !== "string" || !connection.gameState.endsWith("_1")) return;
+      connection.gameState = 0;
+      connection.sendCustom({
+        type: 'game',
+        request: 'end',
+      });
+      updatePlayer(connection.clientId, true);
+      break;
+
+      case 'play':
+      if (!connection.loggedIn) return;
+      if (!games[connection.gameState]) return;
+      switch (connection.gameState) {
+        case 'TicTacToe':
+        tictactoe.play(playStates[connection.clientId], data, connection);
+        break;
+
+        case 'Battleship':
+
+        break;
+      }
       break;
     }
   });
 
   // Lorsque la connexion est fermée...
   connection.on('close', (reasonCode, description) => {
+    if (connection.gameState === -1) {
+      connectedClients[connection.askGameEnnemy].gameState = 0;
+      connectedClients[connection.askGameEnnemy].sendCustom({
+        type: 'requestMatch',
+        request: 'stopRequest',
+      });
+      updatePlayer(connection.askGameEnnemy, true);
+    }
+    if (connection.gameState === -2) {
+      connectedClients[connection.askGameEnnemy].gameState = 0;
+      connectedClients[connection.askGameEnnemy].sendCustom({
+        type: 'waitMatch',
+        request: 'stopWaiting',
+      });
+      updatePlayer(connection.askGameEnnemy, true);
+    }
+    if (connection.loggedIn) updatePlayer(connection.clientId, false);
     // On retire la connexion de la liste
     delete connectedClients[connection.clientId];
-    for (let clientId in connectedClients) {
-      if (connectedClients[clientId].sendPlayers) {
-        connectedClients[clientId].sendCustom({
-          type: 'players',
-          request: 'removePlayer',
-          data: {id: connection.clientId}
-        });
-      }
-    }
   });
 
   connection.on('error', err => {
@@ -173,6 +347,7 @@ websocketServer.on('request', request => {
   connectedClients[nextClientId] = connection;
   nextClientId++;
   connection.clientIP = request.socket.remoteAddress.split("::ffff:").join("");
+  connection.gameState = 0;
 
   // Et on lui envoie les données initiales
   connection.sendCustom({

@@ -13,6 +13,7 @@ class PlayerSelect extends Component {
 
     this.handleClickBackground = this.handleClickBackground.bind(this);
     this.handleClickPlayer = this.handleClickPlayer.bind(this);
+    this.handleClickCancel = this.handleClickCancel.bind(this);
   }
 
   componentDidMount() {
@@ -68,6 +69,12 @@ class PlayerSelect extends Component {
   handleClickBackground(e) {
     e.preventDefault();
     e.stopPropagation();
+    const { waitingAnswer } = this.state;
+    if (waitingAnswer) {
+      wsMgr.sendData({
+        request: "cancelAskGame",
+      });
+    }
     this.props.onClose();
   }
 
@@ -77,6 +84,12 @@ class PlayerSelect extends Component {
     wsMgr.sendData({
       request: "askGame",
       data: { id, name }
+    });
+  }
+
+  handleClickCancel(e) {
+    wsMgr.sendData({
+      request: "cancelAskGame",
     });
   }
 
@@ -92,14 +105,18 @@ class PlayerSelect extends Component {
     return (
       <div style={styles.mainContainer} onClick={this.handleClickBackground}>
         <div style={styles.subContainer} onClick={e => {e.stopPropagation();}}>
-          <div>Chose an opponent to play {title}:</div>
           {waitingAnswer ? (
             <div>
-              <div>Waiting answer from {waitingAnswer}...</div>
-              <div><button>Annuler</button></div>
+              <div>Waiting answer from {waitingAnswer} to play {title}...</div>
+              <div><button onClick={this.handleClickCancel}>Annuler</button></div>
             </div>
-          ) : playersList.length ? playersList : (
-            <div>No players connected :(</div>
+          ) : (
+            <div>
+              <div>Chose an opponent to play {title}:</div>
+              {playersList.length ? playersList : (
+                <div>No players connected :(</div>
+              )}
+            </div>
           )}
         </div>
       </div>
