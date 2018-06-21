@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import wsMgr from '../../../js/wsMgr.js';
 
-class TicTacToe extends Component {
+class ConnectFour extends Component {
   constructor(props) {
     super(props);
 
@@ -98,4 +98,4 @@ const styles = {
   },
 };
 
-export default TicTacToe;
+export default ConnectFour;

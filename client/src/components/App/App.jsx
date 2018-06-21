@@ -78,6 +78,10 @@ class App extends Component {
         this.setState({endMessage: "defeat"});
         break;
 
+        case 'draw':
+        this.setState({endMessage: "draw"});
+        break;
+
         case 'end':
         this.setState({endMessage: null, inGame: null});
         break;
@@ -127,7 +131,7 @@ class App extends Component {
         {!endMessage ? null : (
           <div style={styles.endMessageContainer}>
             <div style={styles.subEndMessageContainer}>
-              <div>{endMessage === "victory" ? "Victory !" : "Defeat..."}</div>
+              <div>{endMessage === "victory" ? "Victory !" : (endMessage === "defeat" ? "Defeat..." : "Draw")}</div>
               <div><button onClick={this.handleClickContinue}>Continue...</button></div>
             </div>
           </div>

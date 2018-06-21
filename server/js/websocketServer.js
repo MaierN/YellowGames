@@ -214,24 +214,10 @@ websocketServer.on('request', request => {
       if (connection.gameState !== -2) return;
       connection.gameState = connection.askGameName;
       connectedClients[connection.askGameEnnemy].gameState = connection.askGameName;
-      connectedClients[connection.askGameEnnemy].sendCustom({
-        type: 'game',
-        request: 'create',
-        data: {
-          username: connection.loggedIn,
-          name: connection.askGameName,
-        }
-      });
-      connection.sendCustom({
-        type: 'game',
-        request: 'create',
-        data: {
-          username: connectedClients[connection.askGameEnnemy].loggedIn,
-          name: connection.askGameName,
-        }
-      });
 
       const playState = {name: connection.askGameName};
+      const initialInfosP1 = {};
+      const initialInfosP2 = {};
 
       switch (connection.askGameName) {
         case 'TicTacToe':
@@ -240,9 +226,11 @@ websocketServer.on('request', request => {
           ["", "", ""],
           ["", "", ""],
         ];
-        playState.x = connection;
-        playState.o = connectedClients[connection.askGameEnnemy];
-        playstate.next = "x";
+        playState.x = connectedClients[connection.askGameEnnemy];
+        playState.o = connection;
+        playState.next = "x";
+        initialInfosP1.yourTurn = true;
+        initialInfosP2.yourTurn = false;
         break;
 
         case 'Battleship':
@@ -252,6 +240,25 @@ websocketServer.on('request', request => {
 
       playStates[connection.clientId] = playState;
       playStates[connection.askGameEnnemy] = playState;
+
+      connectedClients[connection.askGameEnnemy].sendCustom({
+        type: 'game',
+        request: 'create',
+        data: {
+          username: connection.loggedIn,
+          name: connection.askGameName,
+          initialInfos: initialInfosP1,
+        }
+      });
+      connection.sendCustom({
+        type: 'game',
+        request: 'create',
+        data: {
+          username: connectedClients[connection.askGameEnnemy].loggedIn,
+          name: connection.askGameName,
+          initialInfos: initialInfosP2,
+        }
+      });
       break;
 
       // Décline la demande de partie
@@ -333,9 +340,17 @@ websocketServer.on('request', request => {
       });
       updatePlayer(connection.askGameEnnemy, true);
     }
+    if (typeof connection.gameState === "string" && !connection.gameState.endsWith("_1")) {
+      connectedClients[connection.askGameEnnemy].gameState += "_1";
+      connectedClients[connection.askGameEnnemy].sendCustom({
+        type: 'game',
+        request: 'victory',
+      });
+    }
     if (connection.loggedIn) updatePlayer(connection.clientId, false);
     // On retire la connexion de la liste
     delete connectedClients[connection.clientId];
+    delete playStates[connection.clientId];
   });
 
   connection.on('error', err => {

@@ -28,7 +28,11 @@ class GamePlay extends Component {
     switch (inGame.name) {
       case "TicTacToe":
       title = "Tic Tac Toe";
-      gameComponent = <TicTacToe></TicTacToe>;
+      gameComponent = <TicTacToe initialInfos={inGame.initialInfos}></TicTacToe>;
+      break;
+
+      case "ConnectFour":
+      title = "Connect Four";
       break;
 
       case "Battleship":
