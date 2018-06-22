@@ -5,6 +5,7 @@ const WebSocketServer = require('websocket').server;
 
 const games = {
   TicTacToe: "Tic Tac Toe",
+  ConnectFour: "Connect Four",
   Battleship: "Battleship",
 };
 
@@ -49,6 +50,7 @@ const httpServer = require('./httpServer.js');
 const log = require('./log.js');
 const config = require('./config.js');
 const tictactoe = require('./tictactoe.js');
+const connectfour = require('./connectfour.js');
 
 
 function updatePlayer(id, isAdd) {
@@ -233,6 +235,22 @@ websocketServer.on('request', request => {
         initialInfosP2.yourTurn = false;
         break;
 
+        case 'ConnectFour':
+        playState.grid = [
+          ["", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", ""],
+        ];
+        playState.x = connectedClients[connection.askGameEnnemy];
+        playState.o = connection;
+        playState.next = "x";
+        initialInfosP1.yourTurn = true;
+        initialInfosP2.yourTurn = false;
+        break;
+
         case 'Battleship':
 
         break;
@@ -312,6 +330,10 @@ websocketServer.on('request', request => {
       switch (connection.gameState) {
         case 'TicTacToe':
         tictactoe.play(playStates[connection.clientId], data, connection);
+        break;
+
+        case 'ConnectFour':
+        connectfour.play(playStates[connection.clientId], data, connection);
         break;
 
         case 'Battleship':

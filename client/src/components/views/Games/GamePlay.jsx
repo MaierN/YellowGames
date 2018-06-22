@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import TicTacToe from './TicTacToe.jsx';
+import ConnectFour from './ConnectFour.jsx';
 
 import wsMgr from '../../../js/wsMgr.js';
 
@@ -33,6 +34,7 @@ class GamePlay extends Component {
 
       case "ConnectFour":
       title = "Connect Four";
+      gameComponent = <ConnectFour initialInfos={inGame.initialInfos}></ConnectFour>;
       break;
 
       case "Battleship":

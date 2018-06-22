@@ -31,7 +31,7 @@ class GameInList extends Component {
       <div onClick={this.handleClick} style={styles.mainContainer}>
         <div><img src={image} alt="" style={styles.img}/></div>
         <div>
-          <div>{title}</div>
+          <div style={styles.title}>{title}</div>
           <div>{description}</div>
         </div>
         {!showPlayerSelect ? null : (
@@ -51,6 +51,10 @@ const styles = {
   },
   img: {
     width: "50px",
+  },
+  title: {
+    fontSize: "18px",
+    fontWeight: "bold",
   },
 };
 
