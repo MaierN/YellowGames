@@ -169,6 +169,7 @@ websocketServer.on('request', request => {
       if (connection.gameState !== 0) return;
       if (!connectedClients[data.id] || connectedClients[data.id].gameState !== 0) return;
       if (!games[data.name]) return;
+      if (connection.clientId == data.id) return;
       connectedClients[data.id].gameState = -2;
       connection.gameState = -1;
       connectedClients[data.id].askGameEnnemy = connection.clientId;
