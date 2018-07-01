@@ -74,7 +74,7 @@ class GamesList extends Component {
 
 const styles = {
   requestContainer: {
-    position: "absolute",
+    position: "fixed",
     top: "0px",
     left: "0px",
     bottom: "0px",

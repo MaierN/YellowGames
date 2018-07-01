@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import TicTacToe from './TicTacToe.jsx';
 import ConnectFour from './ConnectFour.jsx';
+import Battleship from './Battleship.jsx';
 
 import wsMgr from '../../../js/wsMgr.js';
 
@@ -39,6 +40,7 @@ class GamePlay extends Component {
 
       case "Battleship":
       title = "Battleship";
+      gameComponent = <Battleship initialInfos={inGame.initialInfos}></Battleship>
       break;
 
       default:

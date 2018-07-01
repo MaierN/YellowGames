@@ -28,7 +28,7 @@ class App extends Component {
     const self = this;
 
     wsMgr.setOnClose(() => {
-      self.setState({loaded: false, loggedIn: null});
+      self.setState({loaded: false, loggedIn: null, inGame: null, endMessage: null});
       self.infos = {};
     });
 
@@ -143,7 +143,7 @@ class App extends Component {
 
 const styles = {
   endMessageContainer: {
-    position: "absolute",
+    position: "fixed",
     top: "0px",
     left: "0px",
     bottom: "0px",

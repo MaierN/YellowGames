@@ -51,6 +51,7 @@ const log = require('./log.js');
 const config = require('./config.js');
 const tictactoe = require('./tictactoe.js');
 const connectfour = require('./connectfour.js');
+const battleship = require('./battleship.js');
 
 
 function updatePlayer(id, isAdd) {
@@ -252,7 +253,76 @@ websocketServer.on('request', request => {
         break;
 
         case 'Battleship':
-
+        playState.gridP1 = [
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+        ];
+        playState.gridP2 = [
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+        ];
+        playState.hitsP1 = [
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+        ];
+        playState.hitsP2 = [
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+        ];
+        playState.boatsP1 = {
+          1: {placed: false, size: 5, hits: 0},
+          2: {placed: false, size: 4, hits: 0},
+          3: {placed: false, size: 3, hits: 0},
+          4: {placed: false, size: 3, hits: 0},
+          5: {placed: false, size: 2, hits: 0},
+        };
+        playState.boatsP2 = {
+          1: {placed: false, size: 5, hits: 0},
+          2: {placed: false, size: 4, hits: 0},
+          3: {placed: false, size: 3, hits: 0},
+          4: {placed: false, size: 3, hits: 0},
+          5: {placed: false, size: 2, hits: 0},
+        };
+        playState.remainingP1 = 5;
+        playState.remainingP2 = 5;
+        playState.p1 = connectedClients[connection.askGameEnnemy];
+        playState.p2 = connection;
+        playState.phase = 0;
+        playState.next = "p1";
+        initialInfosP1.yourTurn = true;
+        initialInfosP2.yourTurn = false;
         break;
       }
 
@@ -337,7 +407,7 @@ websocketServer.on('request', request => {
         break;
 
         case 'Battleship':
-
+        battleship.play(playStates[connection.clientId], data, connection);
         break;
       }
       break;
