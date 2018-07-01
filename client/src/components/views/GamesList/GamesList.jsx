@@ -62,7 +62,7 @@ class GamesList extends Component {
         {!gameRequest ? null : (
           <div style={styles.requestContainer}>
             <div style={styles.subRequestContainer}>
-              <div>{gameRequest.username + " "}challenged you to play{" " + gameRequest.title + " "}!</div>
+              <div><span style={{fontWeight: "bold"}}>{gameRequest.username}</span> challenged you to play <span style={{fontWeight: "bold"}}>{gameRequest.title}</span>!</div>
               <div><button onClick={this.handleClickAccept}>Accept</button><button onClick={this.handleClickDecline}>Decline</button></div>
             </div>
           </div>

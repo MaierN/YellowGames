@@ -74,6 +74,18 @@ function updatePlayer(id, isAdd) {
   }
 }
 
+function sendChat(request, data) {
+  for (let clientId in connectedClients) {
+    if (connectedClients[clientId].sendChat) {
+      connectedClients[clientId].sendCustom({
+        type: 'chat',
+        request,
+        data,
+      });
+    }
+  }
+}
+
 // Création du serveur websocket
 const websocketServer = new WebSocketServer({
   httpServer: httpServer.server,
@@ -412,6 +424,35 @@ websocketServer.on('request', request => {
         break;
       }
       break;
+
+      case 'startSendChat':
+      if (!connection.loggedIn) return;
+      const availablePlayers2 = {};
+      for (let clientId in connectedClients) {
+        if (connectedClients[clientId].sendChat) {
+          availablePlayers2[clientId] = {id: clientId, username: connectedClients[clientId].loggedIn}
+        }
+      }
+      connection.sendChat = true;
+      connection.sendCustom({
+        type: 'chat',
+        request: 'initialPlayers',
+        data: availablePlayers2,
+      });
+      sendChat("arrived", { id: connection.clientId, username: connection.loggedIn });
+      break;
+
+      case 'stopSendChat':
+      connection.sendChat = false;
+      sendChat("left", { id: connection.clientId, username: connection.loggedIn });
+      break;
+
+      case 'chat':
+      if (!connection.loggedIn) return;
+      if (typeof data.text !== "string") return;
+      if (data.text.length === 0) return;
+      sendChat("message", { text: data.text.substring(0, 200), username: connection.loggedIn, id: connection.clientId });
+      break;
     }
   });
 
@@ -441,6 +482,7 @@ websocketServer.on('request', request => {
       });
     }
     if (connection.loggedIn) updatePlayer(connection.clientId, false);
+    if (connection.sendChat) sendChat("left", { id: connection.clientId, username: connection.loggedIn });
     // On retire la connexion de la liste
     delete connectedClients[connection.clientId];
     delete playStates[connection.clientId];

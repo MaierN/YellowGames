@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import wsMgr from '../../../js/wsMgr.js';
+import colors from '../../../js/colors.js';
 
 class PlayerSelect extends Component {
   constructor(props) {
@@ -99,7 +100,7 @@ class PlayerSelect extends Component {
 
     const playersList = [];
     for (let id in players) {
-      playersList.push(<div key={id} style={styles.player} onClick={e => this.handleClickPlayer(e, id)}>{players[id].username}</div>);
+      playersList.push(<div key={id} style={{cursor: "pointer", color: colors.getColor(id), fontWeight: "bold"}} onClick={e => this.handleClickPlayer(e, id)}>{players[id].username}</div>);
     }
 
     return (
@@ -107,14 +108,14 @@ class PlayerSelect extends Component {
         <div style={styles.subContainer} onClick={e => {e.stopPropagation();}}>
           {waitingAnswer ? (
             <div>
-              <div>Waiting answer from {waitingAnswer} to play {title}...</div>
+              <div>Waiting answer from <span style={{fontWeight: "bold"}}>{waitingAnswer}</span> to play <span style={{fontWeight: "bold"}}>{title}</span>...</div>
               <div><button onClick={this.handleClickCancel}>Annuler</button></div>
             </div>
           ) : (
             <div>
-              <div>Chose an opponent to play {title}:</div>
+              <div>Chose an opponent to play <span style={{fontWeight: "bold"}}>{title}</span>:</div>
               {playersList.length ? playersList : (
-                <div>No players connected :(</div>
+                <div>No available player :(</div>
               )}
             </div>
           )}
@@ -139,9 +140,6 @@ const styles = {
     backgroundColor: "white",
     border: "1px solid black",
     cursor: "auto",
-  },
-  player: {
-    cursor: "pointer",
   },
 };
 

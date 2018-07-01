@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import wsMgr from '../../../js/wsMgr.js';
+import wsMgr from '../../js/wsMgr.js';
 
 class Login extends Component {
   constructor(props) {
@@ -14,7 +14,9 @@ class Login extends Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChangeUsername = this.handleChangeUsername.bind(this);
+  }
 
+  componentDidMount() {
     this.loginSubscription = wsMgr.subscribe("login", msg => {
       switch(msg.request) {
         case 'loginFailed':

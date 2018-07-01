@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 
-import Login from '../views/Login/Login.jsx';
+import Login from '../views/Login.jsx';
 import GamesList from '../views/GamesList/GamesList.jsx';
 import GamePlay from '../views/Games/GamePlay.jsx';
+import Chat from '../views/Chat.jsx';
 
 import './App.css';
 
@@ -121,21 +122,30 @@ class App extends Component {
       <Login></Login>
     );
 
-    if (!inGame) return (
-      <GamesList loggedIn={loggedIn}></GamesList>
-    );
-
     return (
-      <div>
-        <GamePlay inGame={inGame}></GamePlay>
-        {!endMessage ? null : (
-          <div style={styles.endMessageContainer}>
-            <div style={styles.subEndMessageContainer}>
-              <div>{endMessage === "victory" ? "Victory !" : (endMessage === "defeat" ? "Defeat..." : "Draw")}</div>
-              <div><button onClick={this.handleClickContinue}>Continue</button></div>
-            </div>
+      <div style={{display: "flex", flexDirection: "row"}}>
+        <div>
+          <div style={{height: "100vh", width: "400px", borderRight: "1px solid black"}}>
+            <Chat></Chat>
           </div>
-        )}
+        </div>
+        <div style={{flexGrow: 1, overflowY: "auto", height: "100vh", minWidth: "400px"}}>
+          {!inGame ? (
+            <GamesList loggedIn={loggedIn}></GamesList>
+          ) : (
+            <div>
+              <GamePlay inGame={inGame}></GamePlay>
+              {!endMessage ? null : (
+                <div style={styles.endMessageContainer}>
+                  <div style={styles.subEndMessageContainer}>
+                    <div>{endMessage === "victory" ? "Victory !" : (endMessage === "defeat" ? "Defeat..." : "Draw")}</div>
+                    <div><button onClick={this.handleClickContinue}>Continue</button></div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     );
   }
