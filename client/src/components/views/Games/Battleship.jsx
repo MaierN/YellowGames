@@ -309,7 +309,7 @@ class Battleship extends Component {
           <div>
             <div>{yourBoatsComp}</div>
             <div>
-              <label>Rotate: <input type="checkbox" checked={rotated} onChange={this.handleChangeRotated}></input></label>
+              <label>Vertical: <input type="checkbox" checked={rotated} onChange={this.handleChangeRotated}></input></label>
             </div>
           </div>
         </div>

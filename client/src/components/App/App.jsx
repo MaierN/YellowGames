@@ -132,7 +132,7 @@ class App extends Component {
           <div style={styles.endMessageContainer}>
             <div style={styles.subEndMessageContainer}>
               <div>{endMessage === "victory" ? "Victory !" : (endMessage === "defeat" ? "Defeat..." : "Draw")}</div>
-              <div><button onClick={this.handleClickContinue}>Continue...</button></div>
+              <div><button onClick={this.handleClickContinue}>Continue</button></div>
             </div>
           </div>
         )}
