@@ -76,7 +76,7 @@ class Login extends Component {
           <div style={styles.insert}>Insert player name... (4-20 chars)</div>
           <form onSubmit={this.handleSubmit} style={{textAlign: "center"}}>
             <div>
-              <input style={styles.username} placeholder="Name..." type="text" value={username} onChange={this.handleChangeUsername}></input>
+              <input style={styles.username} placeholder="Name..." autoFocus={true} type="text" value={username} onChange={this.handleChangeUsername}></input>
             </div>
             <div style={styles.errors}>
               {!unexpectedError ? null : (
@@ -134,10 +134,12 @@ const styles = {
     width: "400px",
     textAlign: "center",
     border: "1px solid rgb(254,185,45)",
+    color: "#444444",
   },
   errors: {
     display: "flex",
     alignItems: "center",
+    justifyContent: "center",
     height: "50px",
     color: "#b00000",
     fontWeight: "bold",

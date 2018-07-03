@@ -111,10 +111,7 @@ class App extends Component {
 
     if (!loaded) return (
       <div className="loader-container">
-        <div>
           <div className="loader"></div>
-        </div>
-        <div>Loading...</div>
       </div>
     );
 
