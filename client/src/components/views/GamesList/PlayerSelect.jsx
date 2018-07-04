@@ -107,7 +107,7 @@ class PlayerSelect extends Component {
 
     const playersList = [];
     for (let id in players) {
-      playersList.push(<div key={id} style={{cursor: "pointer", color: colors.getColor(id), fontWeight: "bold"}} onClick={e => this.handleClickPlayer(e, id)}>{players[id].username}</div>);
+      playersList.push(<div key={id} className="playerSelect-player" style={{color: colors.getColor(id), borderColor: colors.getColor(id)}} onClick={e => this.handleClickPlayer(e, id)}>{players[id].username}</div>);
     }
 
     return (
@@ -115,15 +115,17 @@ class PlayerSelect extends Component {
         <div className="playerSelect-subContainer" onClick={e => {e.stopPropagation();}}>
           {waitingAnswer ? (
             <div>
-              <div>Waiting answer from <span style={{fontWeight: "bold"}}>{waitingAnswer}</span> to play <span style={{fontWeight: "bold"}}>{title}</span>...</div>
-              <div><button onClick={this.handleClickCancel}>Annuler</button></div>
+              <div className="playerSelect-choose">Waiting answer from <span className="playerSelect-chooseTitle">{waitingAnswer}</span> to play <span className="playerSelect-chooseTitle">{title}</span>...</div>
+              <div><button className="playerSelect-cancelButton" onClick={this.handleClickCancel}>Cancel</button></div>
             </div>
           ) : (
             <div>
-              <div>Chose an opponent to play <span style={{fontWeight: "bold"}}>{title}</span>:</div>
+              <div className="playerSelect-choose">Choose an opponent to play <span className="playerSelect-chooseTitle">{title}</span>:</div>
+              <div>
               {playersList.length ? playersList : (
-                <div>No available player :(</div>
+                <div className="playerSelect-noPlayer">No available player <span className="playerSelect-noPlayerSmiley">:(</span></div>
               )}
+              </div>
             </div>
           )}
         </div>

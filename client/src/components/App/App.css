@@ -97,7 +97,6 @@ body {
   transition-duration: 0.2s;
   cursor: pointer;
   border-radius: 3px;
-  font-weight: bold;
   font-family: Bungee, cursive;
   line-height: 35px;
   box-shadow: 0 2px 8px 0 rgba(0,0,0,0.2), 0 2px 10px 0 rgba(0,0,0,0.19);
@@ -106,6 +105,7 @@ body {
 .playButton:hover {
     background-color: white;
     color: rgb(254,165,73);
+    transform: scale(1.2);
 }
 
 input:focus,
