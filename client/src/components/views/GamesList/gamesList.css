@@ -172,12 +172,12 @@
   border-radius: 5px;
   padding: 5px 10px;
   margin: 5px 10px;
-  transition: .2s;
+  transition: .15s;
   background-color: white;
 }
 
 .playerSelect-player:hover {
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 
 .playerSelect-choose {
@@ -203,7 +203,7 @@
   display: inline-block;
   font-size: 25px;
   line-height: 25px;
-  margin: 5px 10px 15px 10px;
+  margin: 5px 10px 5px 10px;
   -webkit-transition-duration: 0.2s; /* Safari */
   transition-duration: 0.2s;
   cursor: pointer;
@@ -227,10 +227,35 @@
 .playerSelect-noPlayerSmiley {
   display: inline-block;
   font-weight: bold;
-  margin-left: 10px;
   transition: 0.2s;
+  cursor: default;
+  padding: 0px 10px;
 }
 
 .playerSelect-noPlayerSmiley:hover {
   transform: scale(1.4);
+}
+
+.gamesList-acceptButton {
+  background-color: #3ab000;
+  color: white;
+  border: 3px solid white;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 25px;
+  line-height: 25px;
+  margin: 5px 10px 5px 10px;
+  -webkit-transition-duration: 0.2s; /* Safari */
+  transition-duration: 0.2s;
+  cursor: pointer;
+  border-radius: 3px;
+  font-family: Bungee, cursive;
+  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.2), 0 2px 20px 0 rgba(0,0,0,0.19);
+}
+
+.gamesList-acceptButton:hover {
+    background-color: white;
+    color: #3ab000;
 }

@@ -193,6 +193,7 @@ websocketServer.on('request', request => {
         request: 'startWaiting',
         data: {
           username: connectedClients[data.id].loggedIn,
+          id: data.id,
         },
       });
       connectedClients[data.id].sendCustom({
@@ -201,6 +202,7 @@ websocketServer.on('request', request => {
         data: {
           username: connection.loggedIn,
           title: games[data.name],
+          id: connection.clientId,
         },
       });
       updatePlayer(connection.clientId, false);

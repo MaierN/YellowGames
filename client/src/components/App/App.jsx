@@ -74,18 +74,29 @@ class App extends Component {
 
         case 'victory':
         this.setState({endMessage: "victory"});
+        if (!document.body.overflowYCount) document.body.overflowYCount = 0;
+        document.body.overflowYCount++;
+        document.body.style.overflowY = "hidden";
         break;
 
         case 'defeat':
         this.setState({endMessage: "defeat"});
+        if (!document.body.overflowYCount) document.body.overflowYCount = 0;
+        document.body.overflowYCount++;
+        document.body.style.overflowY = "hidden";
         break;
 
         case 'draw':
         this.setState({endMessage: "draw"});
+        if (!document.body.overflowYCount) document.body.overflowYCount = 0;
+        document.body.overflowYCount++;
+        document.body.style.overflowY = "hidden";
         break;
 
         case 'end':
         this.setState({endMessage: null, inGame: null});
+        document.body.overflowYCount--;
+        if (document.body.overflowYCount === 0) document.body.style.overflowY = "auto";
         break;
 
         default:
@@ -132,10 +143,10 @@ class App extends Component {
             <div>
               <GamePlay inGame={inGame}></GamePlay>
               {!endMessage ? null : (
-                <div style={styles.endMessageContainer}>
-                  <div style={styles.subEndMessageContainer}>
-                    <div>{endMessage === "victory" ? "Victory !" : (endMessage === "defeat" ? "Defeat..." : "Draw")}</div>
-                    <div><button onClick={this.handleClickContinue}>Continue</button></div>
+                <div className="playerSelect-mainContainer" style={{cursor: "auto"}}>
+                  <div className="playerSelect-subContainer">
+                    <div className="playerSelect-choose" style={{fontSize: "35px", marginTop: "10px"}}>{endMessage === "victory" ? "Victory !" : (endMessage === "defeat" ? "Defeat..." : "Draw")}</div>
+                    <div><button className="app-continueButton" onClick={this.handleClickContinue}>Continue</button></div>
                   </div>
                 </div>
               )}
@@ -146,21 +157,5 @@ class App extends Component {
     );
   }
 }
-
-const styles = {
-  endMessageContainer: {
-    position: "fixed",
-    top: "0px",
-    left: "0px",
-    bottom: "0px",
-    right: "0px",
-    backgroundColor: "rgba(0,0,0,.5)",
-  },
-  subEndMessageContainer: {
-    margin: "50px",
-    backgroundColor: "white",
-    border: "1px solid black",
-  },
-};
 
 export default App;

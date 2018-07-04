@@ -156,3 +156,27 @@ button:focus {
     min-width: 0;
   }
 }
+
+.app-continueButton {
+  background-color: rgb(254,185,45);
+  color: white;
+  border: 3px solid white;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 25px;
+  line-height: 25px;
+  margin: 15px 10px 5px 10px;
+  -webkit-transition-duration: 0.2s; /* Safari */
+  transition-duration: 0.2s;
+  cursor: pointer;
+  border-radius: 3px;
+  font-family: Bungee, cursive;
+  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.2), 0 2px 20px 0 rgba(0,0,0,0.19);
+}
+
+.app-continueButton:hover {
+    background-color: white;
+    color: rgb(254,165,73);
+}

@@ -10,6 +10,7 @@ class PlayerSelect extends Component {
     this.state = {
       players: {},
       waitingAnswer: null,
+      waitingId: null,
     };
 
     this.handleClickBackground = this.handleClickBackground.bind(this);
@@ -46,11 +47,11 @@ class PlayerSelect extends Component {
     this.waitMatchSubscription = wsMgr.subscribe("waitMatch", msg => {
       switch(msg.request) {
         case 'startWaiting':
-        this.setState({waitingAnswer: msg.data.username});
+        this.setState({ waitingAnswer: msg.data.username, waitingId: msg.data.id });
         break;
 
         case 'stopWaiting':
-        this.setState({waitingAnswer: null});
+        this.setState({waitingAnswer: null, waitingId: null});
         break;
 
         default:
@@ -103,7 +104,7 @@ class PlayerSelect extends Component {
 
   render() {
     const { title } = this.props;
-    const { players, waitingAnswer } = this.state;
+    const { players, waitingAnswer, waitingId } = this.state;
 
     const playersList = [];
     for (let id in players) {
@@ -115,7 +116,7 @@ class PlayerSelect extends Component {
         <div className="playerSelect-subContainer" onClick={e => {e.stopPropagation();}}>
           {waitingAnswer ? (
             <div>
-              <div className="playerSelect-choose">Waiting answer from <span className="playerSelect-chooseTitle">{waitingAnswer}</span> to play <span className="playerSelect-chooseTitle">{title}</span>...</div>
+              <div className="playerSelect-choose">Waiting answer from <span className="playerSelect-chooseTitle" style={{color: colors.getColor(waitingId)}}>{waitingAnswer}</span> to play <span className="playerSelect-chooseTitle">{title}</span>...</div>
               <div><button className="playerSelect-cancelButton" onClick={this.handleClickCancel}>Cancel</button></div>
             </div>
           ) : (
