@@ -81,19 +81,19 @@ class Login extends Component {
             {!lengthError ? null : (
               <svg viewBox="0 0 100 13" style={{border: "1px solid transparent"}}>
                 <text x="8" y="5.5" style={styles.errorsSVG}>Username must be at least 4 and</text>
-                <text x="15" y="11" style={styles.errorsSVG}>at most 20 characters long !</text>
+                <text x="15" y="11" style={styles.errorsSVG}>at most 20 characters long!</text>
               </svg>
             )}
             {!unexpectedError ? null : (
               <svg viewBox="0 0 100 13" style={{border: "1px solid transparent"}}>
-                <text x="10" y="8" style={styles.errorsSVG}>This username is already in use !</text>
+                <text x="10" y="8" style={styles.errorsSVG}>This username is already in use!</text>
               </svg>
             )}
             {unexpectedError || lengthError ? null : (
               <svg viewBox="0 0 100 13" style={{border: "1px solid transparent"}}></svg>
             )}
             <div>
-              <input className="playButton" type="submit" value="Play !"></input>
+              <input className="playButton" type="submit" value="Play!"></input>
             </div>
           </form>
         </div>

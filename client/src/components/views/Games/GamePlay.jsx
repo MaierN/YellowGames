@@ -5,6 +5,9 @@ import ConnectFour from './ConnectFour.jsx';
 import Battleship from './Battleship.jsx';
 
 import wsMgr from '../../../js/wsMgr.js';
+import colors from '../../../js/colors.js';
+
+import './gamePlay.css';
 
 class GamePlay extends Component {
   constructor(props) {
@@ -43,14 +46,13 @@ class GamePlay extends Component {
       gameComponent = <Battleship initialInfos={inGame.initialInfos}></Battleship>
       break;
 
-      default:
-      break;
+      default: break;
     }
 
     return (
       <div>
-        <div>Playing {title} against {inGame.username} !</div>
-        <div><button onClick={this.handleClickGiveUp}>Give up !</button></div>
+        <div className="gamePlay-title">Playing <span className="gamePlay-titleBig">{title}</span> against <span style={{color: colors.getColor(inGame.id)}} className="gamePlay-titleBig">{inGame.username}</span>!</div>
+        <div><button className="gamePlay-giveUpButton" onClick={this.handleClickGiveUp}>Give up...</button></div>
         {gameComponent}
       </div>
     );

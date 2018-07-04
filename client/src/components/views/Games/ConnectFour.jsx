@@ -68,7 +68,7 @@ class ConnectFour extends Component {
 
     return (
       <div style={styles.grid}>
-        <div>{yourTurn ? "Your turn !" : "Opponent is playing..."}</div>
+        <div>{yourTurn ? "Your turn!" : "Opponent is playing..."}</div>
         <div style={styles.buttonsContainer}>{buttonsComp}</div>
         {gridComp}
       </div>

@@ -60,7 +60,7 @@ class TicTacToe extends Component {
 
     return (
       <div style={styles.grid}>
-        <div>{yourTurn ? "Your turn !" : "Opponent is playing..."}</div>
+        <div>{yourTurn ? "Your turn!" : "Opponent is playing..."}</div>
         {gridComp}
       </div>
     );

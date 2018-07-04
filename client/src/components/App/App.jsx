@@ -145,7 +145,7 @@ class App extends Component {
               {!endMessage ? null : (
                 <div className="playerSelect-mainContainer" style={{cursor: "auto"}}>
                   <div className="playerSelect-subContainer">
-                    <div className="playerSelect-choose" style={{fontSize: "35px", marginTop: "10px"}}>{endMessage === "victory" ? "Victory !" : (endMessage === "defeat" ? "Defeat..." : "Draw")}</div>
+                    <div className="playerSelect-choose" style={{fontSize: "35px", marginTop: "10px"}}>{endMessage === "victory" ? "Victory!" : (endMessage === "defeat" ? "Defeat..." : "Draw")}</div>
                     <div><button className="app-continueButton" onClick={this.handleClickContinue}>Continue</button></div>
                   </div>
                 </div>

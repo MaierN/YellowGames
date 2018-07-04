@@ -352,6 +352,7 @@ websocketServer.on('request', request => {
           username: connection.loggedIn,
           name: connection.askGameName,
           initialInfos: initialInfosP1,
+          id: connection.clientId,
         }
       });
       connection.sendCustom({
@@ -361,6 +362,7 @@ websocketServer.on('request', request => {
           username: connectedClients[connection.askGameEnnemy].loggedIn,
           name: connection.askGameName,
           initialInfos: initialInfosP2,
+          id: connectedClients[connection.askGameEnnemy].clientId,
         }
       });
       break;

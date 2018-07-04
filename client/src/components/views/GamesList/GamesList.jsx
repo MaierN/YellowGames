@@ -64,7 +64,7 @@ class GamesList extends Component {
     return (
       <div>
         <div style={{textAlign: "center", padding: "15px"}}><img src="/img/completeLogo.png" alt="" style={{width: "100%", maxWidth: "550px"}}></img></div>
-        <div className="gamesList-welcome">Welcome {loggedIn} !</div>
+        <div className="gamesList-welcome">Welcome {loggedIn}!</div>
         <div className="gamesList-first">First, choose a game:</div>
         <GameInList name="TicTacToe" title="Tic Tac Toe" description="Tic-tac-toe (also known as noughts and crosses or Xs and Os) is a paper-and-pencil game for two players, X and O, who take turns marking the spaces in a 3×3 grid. The player who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row wins the game." image="/img/TicTacToe.png"></GameInList>
         <GameInList name="ConnectFour" title="Connect Four" description="Connect Four (also known as Captain's Mistress, Four Up, Plot Four, Find Four, Four in a Row, Four in a Line and Gravitrips (in Soviet Union)) is a two-player connection game in which the players first choose a color and then take turns dropping one colored disc from the top into a seven-column, six-row vertically suspended grid. The pieces fall straight down, occupying the next available space within the column. The objective of the game is to be the first to form a horizontal, vertical, or diagonal line of four of one's own discs." image="/img/ConnectFour.jpg"></GameInList>

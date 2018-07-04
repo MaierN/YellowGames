@@ -258,10 +258,10 @@ class Battleship extends Component {
             <button
               disabled={!clickable}
               onClick={!clickable ? () => {} : e => this.handleClickPlace(e, i)}>
-              {boats[i].placed ? "Placed..." : selection === i ? "Selected..." : "Place !"}
+              {boats[i].placed ? "Placed..." : selection === i ? "Selected..." : "Place!"}
             </button>
           ) : (
-            boats[i].hits < boats[i].size ? "Alive !" : "Sunk..."
+            boats[i].hits < boats[i].size ? "Alive!" : "Sunk..."
           )}
         </div>
       );
@@ -286,12 +286,12 @@ class Battleship extends Component {
 
     const ennemyBoatsComp = [];
     for (let i in ennemyBoats) {
-      ennemyBoatsComp.push(<div key={i}>{ennemyBoats[i].size + ": " + (!ennemyBoats[i].placed ? "Not placed..." : !ennemyBoats[i].sunk ? (phase === 0 ? "Placed" : "Alive...") : "Sunk !")}</div>);
+      ennemyBoatsComp.push(<div key={i}>{ennemyBoats[i].size + ": " + (!ennemyBoats[i].placed ? "Not placed..." : !ennemyBoats[i].sunk ? (phase === 0 ? "Placed" : "Alive...") : "Sunk!")}</div>);
     }
 
     return (
       <div>
-        <div>{phase === 0 ? "Place your ships !" : yourTurn ? "Your turn !" : "Opponent is playing..."}</div>
+        <div>{phase === 0 ? "Place your ships !" : yourTurn ? "Your turn!" : "Opponent is playing..."}</div>
         <div>Ennemy side:</div>
         <div>
           <div style={{display: "flex", flexDirection: "row"}}>
