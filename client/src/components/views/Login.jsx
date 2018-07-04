@@ -58,34 +58,40 @@ class Login extends Component {
     const {username, unexpectedError, lengthError} = this.state;
 
     return (
-      <div style={{display: "flex", flexDirection: "column", height: "100%"}}>
+      <div style={{display: "flex", flexDirection: "column", height: "100%", alignItems: "center"}}>
         <div style={{flexGrow: "1"}}></div>
         <div style={styles.title}>
-          <div style={styles.welcome}>Welcome to...</div>
+          <svg viewBox="0 0 100 10">
+            <text x="20" y="8" style={styles.welcome}>Welcome to...</text>
+          </svg>
           <div style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", fontFamily: "Bungee, cursive"}}>
-            <img src="/img/bigLogoNoText.jpg" alt="" style={styles.bigLogo}></img>
-            <div style={{margin: "0px 10px"}}>
-              <div style={styles.yellow}>Yellow</div>
-              <div style={styles.games}>Games</div>
-            </div>
-            <img src="/img/bigLogoNoTextFlip.jpg" alt="" style={styles.bigLogo}></img>
+            <img src="/img/completeLogo.png" alt="" style={styles.bigLogo}></img>
           </div>
         </div>
         <div style={{flexGrow: "1"}}></div>
-        <div style={{display: "flex", alignItems: "center", flexDirection: "column"}}>
-          <div style={styles.insert}>Insert player name... (4-20 chars)</div>
-          <form onSubmit={this.handleSubmit} style={{textAlign: "center"}}>
+        <div style={{width: "400px", maxWidth: "90%"}}>
+          <svg viewBox="0 0 100 23" style={{border: "1px solid transparent"}}>
+            <text x="6" y="10" style={styles.insertSVG}>Insert player name...</text>
+            <text x="13" y="20" style={styles.insertSVG}>(4-20 characters)</text>
+          </svg>
+          <form onSubmit={this.handleSubmit} style={{textAlign: "center", width: "100%"}}>
             <div>
               <input style={styles.username} placeholder="Name..." autoFocus={true} type="text" value={username} onChange={this.handleChangeUsername}></input>
             </div>
-            <div style={styles.errors}>
-              {!unexpectedError ? null : (
-                <div>This username is already in use.</div>
-              )}
-              {!lengthError ? null : (
-                <div>Username must be at least 4 and at most 20 characters long !</div>
-              )}
-            </div>
+            {!lengthError ? null : (
+              <svg viewBox="0 0 100 13" style={{border: "1px solid transparent"}}>
+                <text x="8" y="5.5" style={styles.errorsSVG}>Username must be at least 4 and</text>
+                <text x="15" y="11" style={styles.errorsSVG}>at most 20 characters long !</text>
+              </svg>
+            )}
+            {!unexpectedError ? null : (
+              <svg viewBox="0 0 100 13" style={{border: "1px solid transparent"}}>
+                <text x="10" y="8" style={styles.errorsSVG}>This username is already in use !</text>
+              </svg>
+            )}
+            {unexpectedError || lengthError ? null : (
+              <svg viewBox="0 0 100 13" style={{border: "1px solid transparent"}}></svg>
+            )}
             <div>
               <input className="playButton" type="submit" value="Play !"></input>
             </div>
@@ -99,15 +105,14 @@ class Login extends Component {
 
 const styles = {
   title: {
-    fontSize: "55px",
-    lineHeight: "55px",
-    color: "white",
     textAlign: "center",
-    fontFamily: "Montserrat, sans-serif",
+    width: "765px",
+    maxWidth: "95%",
   },
   welcome: {
-    marginBottom: "20px",
-    marginTop: "30px",
+    fontFamily: "Montserrat, sans-serif",
+    fontSize: "55%",
+    fill: "white",
   },
   yellow: {
     fontSize: "96px",
@@ -118,33 +123,29 @@ const styles = {
     lineHeight: "100px",
   },
   bigLogo: {
-    height: "250px",
+    width: "100%",
   },
-  insert: {
-    color: "white",
-    fontFamily: "Montserrat, sans-serif",
+  insertSVG: {
+    fill: "white",
     fontWeight: "bold",
-    fontSize: "35px",
-    marginBottom: "15px",
+    fontFamily: "Montserrat, sans-serif",
+    fontSize: "8.8px",
   },
   username: {
     fontSize: "30px",
     fontFamily: "Bungee, cursive",
     height: "40px",
-    width: "400px",
+    maxWidth: "100%",
     textAlign: "center",
     border: "1px solid rgb(254,185,45)",
     color: "#444444",
+    marginTop: "10px",
   },
-  errors: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "50px",
-    color: "#b00000",
+  errorsSVG: {
+    fill: "#b00000",
     fontWeight: "bold",
-    fontSize: "20px",
     fontFamily: "Montserrat, sans-serif",
+    fontSize: "5px",
   },
   btn: {
     backgroundColor: "rgb(254,185,45)",

@@ -142,7 +142,8 @@ websocketServer.on('request', request => {
           type: 'login',
           request: 'loginSuccess',
           data: {
-            username: data.username
+            username: data.username,
+            id: connection.clientId,
           }
         });
       } else {

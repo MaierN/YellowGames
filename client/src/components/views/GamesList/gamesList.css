@@ -1,0 +1,148 @@
+
+.gamesList-welcome {
+  font-family: Bungee, cursive;
+  font-size: 30px;
+  line-height: 30px;
+  text-align: center;
+  color: white;
+  margin-bottom: 30px;
+  padding: 0px 15px;
+}
+
+.gamesList-first {
+  color: white;
+  font-family: Montserrat, sans-serif;
+  font-weight: bold;
+  padding-left: 15px;
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+
+.gameInList-mainContainer {
+  display: flex;
+  margin: 0px 15px 10px 15px;
+  background-color: white;
+  flex-direction: column;
+  color: #333333;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.2), 0 2px 10px 0 rgba(0,0,0,0.19);
+}
+
+.gameInList-headContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.gameInList-image {
+  width: 70px;
+  margin: 5px 10px 5px 10px;
+}
+
+.gameInList-title {
+  flex-grow: 1;
+  text-align: center;
+  padding: 10px 0px;
+  font-family: Bungee, cursive;
+  font-size: 30px;
+  line-height: 30px;
+}
+
+.gameInList-playButton {
+  background-color: rgb(254,185,45);
+  color: white;
+  border: 3px solid white;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 25px;
+  line-height: 25px;
+  margin: 5px 10px 15px 10px;
+  -webkit-transition-duration: 0.2s; /* Safari */
+  transition-duration: 0.2s;
+  cursor: pointer;
+  border-radius: 3px;
+  font-weight: bold;
+  font-family: Bungee, cursive;
+  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.2), 0 2px 20px 0 rgba(0,0,0,0.19);
+}
+
+.gameInList-playButton:hover {
+    background-color: white;
+    color: rgb(254,165,73);
+}
+
+.gameInList-description {
+  font-family: Montserrat, sans-serif;
+  font-weight: bold;
+}
+
+.gameInList-descriptionTextIn {
+  font-size: 0px;
+  padding: 0px;
+  opacity: 0;
+  margin: 0px;
+  transition: opacity .25s, font-size .5s .25s, margin .5s .25s, padding .5s .25s;
+
+}
+
+.gameInList-descriptionTextOut {
+  font-size: 15px;
+  padding: 5px 10px 10px 10px;
+  margin: 5px 0px 5px 0px;
+  transition: font-size .25s, margin .25s, padding .25s, opacity .5s .25s;
+}
+
+.gameInList-dropIconOut {
+  -webkit-transform: rotate(180deg);     /* Chrome and other webkit browsers */
+  -moz-transform: rotate(180deg);        /* FF */
+  -o-transform: rotate(180deg);          /* Opera */
+  -ms-transform: rotate(180deg);         /* IE9 */
+  transform: rotate(180deg);             /* W3C compliant browsers */
+}
+
+.gameInList-dropIcon {
+  background-color: rgb(254,185,45);
+  border-radius: 50%;
+  fill: white;
+  -webkit-transition-duration: 0.2s; /* Safari */
+  transition-duration: 0.2s;
+  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.2), 0 2px 20px 0 rgba(0,0,0,0.19);
+  border: 2px solid white;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.gameInList-dropIcon:hover {
+  background-color: white;
+  fill: rgb(254,185,45);
+}
+
+.playerSelect-mainContainer {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  background-color: rgba(0,0,0,.5);
+  cursor: pointer;
+  padding: 100px 15px 25px 15px;
+}
+
+.playerSelect-subContainer {
+  background-color: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-sizing: border-box;
+  cursor: auto;
+  height: 100%;
+  width: 100%;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  max-height: 100%;
+}

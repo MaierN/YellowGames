@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import Login from '../views/Login.jsx';
 import GamesList from '../views/GamesList/GamesList.jsx';
 import GamePlay from '../views/Games/GamePlay.jsx';
-import Chat from '../views/Chat.jsx';
+import Chat from '../views/Chat/Chat.jsx';
 
 import './App.css';
 
@@ -18,6 +18,7 @@ class App extends Component {
       loggedIn: null,
       inGame: null,
       endMessage: null,
+      id: null,
     };
 
     this.infos = {};
@@ -57,7 +58,7 @@ class App extends Component {
     this.loginSubscription = wsMgr.subscribe("login", msg => {
       switch (msg.request) {
         case 'loginSuccess':
-        this.setState({loggedIn: msg.data.username});
+        this.setState({loggedIn: msg.data.username, id: msg.data.id});
         break;
 
         default:
@@ -107,7 +108,7 @@ class App extends Component {
   }
 
   render() {
-    const { loaded, loggedIn, inGame, endMessage } = this.state;
+    const { loaded, loggedIn, inGame, endMessage, id } = this.state;
 
     if (!loaded) return (
       <div className="loader-container">
@@ -120,15 +121,13 @@ class App extends Component {
     );
 
     return (
-      <div style={{display: "flex", flexDirection: "row"}}>
-        <div>
-          <div style={{height: "100vh", width: "400px", borderRight: "1px solid black"}}>
-            <Chat></Chat>
-          </div>
+      <div className="app-mainContainer">
+        <div className="app-chatContainer">
+          <Chat></Chat>
         </div>
-        <div style={{flexGrow: 1, overflowY: "auto", height: "100vh", minWidth: "400px"}}>
+        <div className="app-mainContentContainer" id="mainContentContainer">
           {!inGame ? (
-            <GamesList loggedIn={loggedIn}></GamesList>
+            <GamesList loggedIn={loggedIn} id={id}></GamesList>
           ) : (
             <div>
               <GamePlay inGame={inGame}></GamePlay>

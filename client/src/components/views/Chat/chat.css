@@ -1,0 +1,107 @@
+
+.chat-sendButton {
+  background-color: rgb(254,185,45);
+  color: white;
+  border: 3px solid white;
+  border-left: none;
+  padding: 0px 18px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  -webkit-transition-duration: 0.2s; /* Safari */
+  transition-duration: 0.2s;
+  cursor: pointer;
+  border-radius: 0px;
+  font-weight: bold;
+  font-family: Bungee, cursive;
+  font-size: 25px;
+  line-height: 45px;
+}
+
+.chat-sendButton:hover {
+    background-color: white;
+    color: rgb(254,165,73);
+}
+
+.chat-messageInput {
+  height: 51px;
+  box-sizing: border-box;
+  width: 100%;
+  border: 3px solid white;
+  border-right: none;
+  border-radius: 10px 0px 0px 10px;
+  font-size: 25px;
+  font-family: Montserrat, sans-serif;
+  color: #444444;
+  font-weight: bold;
+}
+
+.chat-messages>div>span:first-child {
+  font-family: Bungee, cursive;
+  font-size: 15px;
+  line-height: 15px;
+}
+
+.chat-messages>div>span:not(:first-child) {
+  font-family: Montserrat, sans-serif;
+  color: #333333;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.chat-messagesContainer {
+  height: 65%;
+  box-sizing: border-box;
+  padding: 0px 0px 4px 5px;
+}
+
+.chat-messagesSubContainer {
+  background-color: white;
+  overflow-y: auto;
+  box-sizing: border-box;
+  border-radius: 10px 0px 0px 10px;
+  height: 100%;
+  padding: 5px;
+  border: 3px solid white;
+}
+
+.chat-titleContainer {
+  height: 35%;
+  box-sizing: border-box;
+  padding: 0px 0px 15px 5px;
+}
+
+.chat-playersContainer {
+  background-color: white;
+  border-radius: 10px 0px 0px 10px;
+  border: 3px solid white;
+  padding: 5px;
+  overflow-wrap: break-word;
+  overflow-y: auto;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.chat-player {
+  font-family: Bungee, cursive;
+  font-size: 19px;
+  line-height: 20px;
+}
+
+.chat-title {
+  font-size: 40px;
+  line-height: 40px;
+  font-family: Bungee, cursive;
+  text-align: center;
+  margin: 25px 5px 25px 5px;
+  color: white;
+  padding-top: 10px;
+}
+
+.chat-subTitle {
+  color: #222222;
+  font-family: Montserrat, sans-serif;
+  font-weight: bold;
+  font-size: 25px;
+  margin-bottom: 10px;
+}

@@ -18,6 +18,10 @@ class PlayerSelect extends Component {
   }
 
   componentDidMount() {
+    if (!document.body.overflowYCount) document.body.overflowYCount = 0;
+    document.body.overflowYCount++;
+    document.body.style.overflowY = "hidden";
+
     this.playersSubscription = wsMgr.subscribe("players", msg => {
       let newPlayers = {...this.state.players};
       switch(msg.request) {
@@ -60,6 +64,9 @@ class PlayerSelect extends Component {
   }
 
   componentWillUnmount() {
+    document.body.overflowYCount--;
+    if (document.body.overflowYCount === 0) document.body.style.overflowY = "auto";
+
     wsMgr.unsubscribe("players", this.playersSubscription);
     wsMgr.unsubscribe("waitMatch", this.waitMatchSubscription);
     wsMgr.sendData({
@@ -104,8 +111,8 @@ class PlayerSelect extends Component {
     }
 
     return (
-      <div style={styles.mainContainer} onClick={this.handleClickBackground}>
-        <div style={styles.subContainer} onClick={e => {e.stopPropagation();}}>
+      <div className="playerSelect-mainContainer" onClick={this.handleClickBackground}>
+        <div className="playerSelect-subContainer" onClick={e => {e.stopPropagation();}}>
           {waitingAnswer ? (
             <div>
               <div>Waiting answer from <span style={{fontWeight: "bold"}}>{waitingAnswer}</span> to play <span style={{fontWeight: "bold"}}>{title}</span>...</div>
@@ -124,23 +131,5 @@ class PlayerSelect extends Component {
     );
   }
 }
-
-const styles = {
-  mainContainer: {
-    position: "fixed",
-    top: "0px",
-    left: "0px",
-    bottom: "0px",
-    right: "0px",
-    backgroundColor: "rgba(0,0,0,.5)",
-    cursor: "pointer",
-  },
-  subContainer: {
-    margin: "50px",
-    backgroundColor: "white",
-    border: "1px solid black",
-    cursor: "auto",
-  },
-};
 
 export default PlayerSelect;

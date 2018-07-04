@@ -100,6 +100,7 @@ body {
   font-weight: bold;
   font-family: Bungee, cursive;
   line-height: 35px;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.2), 0 2px 10px 0 rgba(0,0,0,0.19);
 }
 
 .playButton:hover {
@@ -123,4 +124,35 @@ button:focus {
 }
 ::-ms-input-placeholder { /* Microsoft Edge */
     color: #aaaaaa;
+}
+
+@media (min-width:801px) {
+  .app-mainContainer {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+  }
+  .app-chatContainer {
+    flex-basis: 350px;
+    border-right: 3px solid white;
+    flex-shrink: 0;
+    min-width: 0;
+  }
+  .app-mainContentContainer {
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width:800px) {
+  .app-mainContainer {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .app-chatContainer {
+    height: 850px;
+    border-top: 3px solid white;
+    flex-shrink: 0;
+    min-width: 0;
+  }
 }
