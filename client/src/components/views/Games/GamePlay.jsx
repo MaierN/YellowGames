@@ -51,9 +51,13 @@ class GamePlay extends Component {
 
     return (
       <div>
-        <div className="gamePlay-title">Playing <span className="gamePlay-titleBig">{title}</span> against <span style={{color: colors.getColor(inGame.id)}} className="gamePlay-titleBig">{inGame.username}</span>!</div>
-        <div><button className="gamePlay-giveUpButton" onClick={this.handleClickGiveUp}>Give up...</button></div>
-        {gameComponent}
+        <div className="gamePlay-mainContainer">
+          <div className="gamePlay-title">Playing <span className="gamePlay-titleBig">{title}</span> against <span style={{color: colors.getColor(inGame.id)}} className="gamePlay-titleBig">{inGame.username}</span>!</div>
+          <div><button className="gamePlay-giveUpButton" onClick={this.handleClickGiveUp}>Give up...</button></div>
+        </div>
+        <div className="gamePlay-mainContainer">
+          {gameComponent}
+        </div>
       </div>
     );
   }

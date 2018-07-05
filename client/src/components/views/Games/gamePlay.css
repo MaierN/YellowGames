@@ -4,7 +4,7 @@
   font-weight: bold;
   font-size: 25px;
   line-height: 30px;
-  margin: 15px;
+  margin: 5px 15px 15px 15px;
 }
 
 .gamePlay-titleBig {
@@ -22,7 +22,7 @@
   display: inline-block;
   font-size: 25px;
   line-height: 25px;
-  margin: 5px 10px 15px 10px;
+  margin: 5px 10px 5px 10px;
   -webkit-transition-duration: 0.2s; /* Safari */
   transition-duration: 0.2s;
   cursor: pointer;
@@ -34,4 +34,106 @@
 .gamePlay-giveUpButton:hover {
     background-color: white;
     color: #b00000;
+}
+
+.gamePlay-mainContainer {
+  margin: 20px;
+  padding: 15px;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.2), 0 2px 20px 0 rgba(0,0,0,0.19);
+  text-align: center;
+}
+
+.turn-mainContainer {
+  display: inline-block;
+  background-color: rgb(254,165,73);
+  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.2), 0 2px 20px 0 rgba(0,0,0,0.19);
+  border: 3px solid white;
+  border-radius: 6px;
+  padding: 10px 15px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: default;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
+
+.turn-text {
+  font-family: Bungee, cursive;
+  font-size: 25px;
+  line-height: 25px;
+  color: rgb(254,165,73);
+  transition: .35s;
+}
+
+.turn-textHighlight {
+  color: white;
+  font-size: 25px;
+  line-height: 25px;
+  cursor: normal;
+}
+
+.turn-icon {
+  fill: white;
+  border: 2px solid white;
+  border-radius: 50%;
+  margin: 10px 5px;
+  flex-shrink: 0;
+  transition: .35s;
+  -webkit-transform: rotate(90deg);     /* Chrome and other webkit browsers */
+  -moz-transform: rotate(90deg);        /* FF */
+  -o-transform: rotate(90deg);          /* Opera */
+  -ms-transform: rotate(90deg);         /* IE9 */
+  transform: rotate(90deg);             /* W3C compliant browsers */
+}
+
+.turn-iconLeft {
+  -webkit-transform: rotate(270deg);     /* Chrome and other webkit browsers */
+  -moz-transform: rotate(270deg);        /* FF */
+  -o-transform: rotate(270deg);          /* Opera */
+  -ms-transform: rotate(270deg);         /* IE9 */
+  transform: rotate(270deg);             /* W3C compliant browsers */
+}
+
+.ticTacToe-fadeIn {
+  stroke: #555555;
+  -webkit-animation: fadein .6s; /* Safari, Chrome and Opera > 12.1 */
+     -moz-animation: fadein .6s; /* Firefox < 16 */
+      -ms-animation: fadein .6s; /* Internet Explorer */
+       -o-animation: fadein .6s; /* Opera < 12.1 */
+          animation: fadein .6s;
+}
+
+@keyframes fadein {
+    from { stroke: white; }
+    to   { stroke: #555555; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { stroke: white; }
+    to   { stroke: #555555; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { stroke: white; }
+    to   { stroke: #555555; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+    from { stroke: white; }
+    to   { stroke: #555555; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+    from { stroke: white; }
+    to   { stroke: #555555; }
 }

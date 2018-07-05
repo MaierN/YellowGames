@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import Turn from './Turn.jsx';
+
 import wsMgr from '../../../js/wsMgr.js';
 
 class TicTacToe extends Component {
@@ -47,54 +49,48 @@ class TicTacToe extends Component {
 
     const gridComp = [];
     for (let i = 0; i < 3; i++) {
-      const rowComp = [];
       for (let j = 0; j < 3; j++) {
-        rowComp.push(
+        gridComp.push(
           yourTurn && grid[i][j] === ""
-          ? (<div key={j} style={styles.clickableCell} onClick={e => this.handleClickCell(e, i, j)}>{grid[i][j]}</div>)
-          : (<div key={j} style={styles.cell}>{grid[i][j]}</div>)
+          ? (<rect key={i + "-" + j} x={j * 90} y={i * 90} width="80" height="80" fill="transparent" style={{cursor: "pointer"}} onClick={e => this.handleClickCell(e, i, j)}/>)
+          : (<rect key={i + "-" + j} x={j * 90} y={i * 90} width="80" height="80" fill="transparent"/>)
         );
+
+        switch(grid[i][j]) {
+          case "o":
+          gridComp.push(<circle key={i + "-" + j + "-o"} className="ticTacToe-fadeIn" cx={j*90+40} cy={i*90+40} r="25" strokeWidth="10" fill="transparent"/>);
+          break;
+
+          case "x":
+          gridComp.push(<line key={i + "-" + j + "-x1"} className="ticTacToe-fadeIn" x1={j*90+15} y1={i*90+15} x2={j*90+65} y2={i*90+65} style={{strokeWidth: "10"}}/>);
+          gridComp.push(<line key={i + "-" + j + "-x2"} className="ticTacToe-fadeIn" x2={j*90+15} y1={i*90+15} x1={j*90+65} y2={i*90+65} style={{strokeWidth: "10"}}/>);
+          break;
+
+          default: break;
+        }
       }
-      gridComp.push(<div key={i} style={styles.row}>{rowComp}</div>);
     }
 
     return (
-      <div style={styles.grid}>
-        <div>{yourTurn ? "Your turn!" : "Opponent is playing..."}</div>
-        {gridComp}
+      <div style={{textAlign: "center"}}>
+        <div>
+          <Turn yourTurn={yourTurn}></Turn>
+        </div>
+        <svg style={{marginTop: "25px", width: "100%", maxWidth: "300px"}} viewBox="0 0 260 260">
+          <rect x="80" y="0" width="10" height="260" rx="5" ry="5" style={styles.separator}/>
+          <rect x="170" y="0" width="10" height="260" rx="5" ry="5" style={styles.separator}/>
+          <rect x="0" y="80" width="260" height="10" rx="5" ry="5" style={styles.separator}/>
+          <rect x="0" y="170" width="260" height="10" rx="5" ry="5" style={styles.separator}/>
+          {gridComp}
+        </svg>
       </div>
     );
   }
 }
 
 const styles = {
-  cell: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "50px",
-    border: "1px solid black",
-    height: "80px",
-    width: "80px",
-    cursor: "default",
-  },
-  clickableCell: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "50px",
-    border: "1px solid black",
-    height: "80px",
-    width: "80px",
-    cursor: "pointer",
-  },
-  row: {
-    display: "flex",
-    flexDirection: "row",
-  },
-  grid: {
-    display: "flex",
-    flexDirection: "column",
+  separator: {
+    fill: "rgb(254,185,45)",
   },
 };
 
