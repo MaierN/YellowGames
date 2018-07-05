@@ -19,6 +19,11 @@ class GamePlay extends Component {
     this.handleClickGiveUp = this.handleClickGiveUp.bind(this);
   }
 
+  componentDidMount() {
+    document.body.scrollTop = 0;
+    document.body.parentElement.scrollTop = 0;
+  }
+
   handleClickGiveUp(e) {
     wsMgr.sendData({
       request: "giveUp",

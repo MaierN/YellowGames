@@ -123,7 +123,7 @@ class App extends Component {
     /*loggedIn = "User";
     inGame = {
       username: "User2",
-      name: "TicTacToe",
+      name: "ConnectFour",
       initialInfos: {},
       id: 23,
     };*/

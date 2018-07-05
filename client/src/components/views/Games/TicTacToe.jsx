@@ -72,7 +72,7 @@ class TicTacToe extends Component {
     }
 
     return (
-      <div style={{textAlign: "center"}}>
+      <div>
         <div>
           <Turn yourTurn={yourTurn}></Turn>
         </div>

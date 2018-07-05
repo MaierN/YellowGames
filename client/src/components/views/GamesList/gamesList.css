@@ -38,8 +38,12 @@
 }
 
 .gameInList-image {
-  width: 70px;
-  margin: 5px 10px 5px 10px;
+  width: 100px;
+  margin: 5px;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.2), 0 2px 10px 0 rgba(0,0,0,0.19);
+  padding: 2px;
+  border-radius: 3px;
+  overflow: hidden;
 }
 
 .gameInList-title {
@@ -90,7 +94,7 @@
 }
 
 .gameInList-descriptionTextOut {
-  font-size: 15px;
+  font-size: 20px;
   padding: 5px 10px 10px 10px;
   margin: 5px 0px 5px 0px;
   transition: font-size .25s, margin .25s, padding .25s, opacity .5s .25s;
@@ -154,26 +158,14 @@
   line-height: 25px;
   display: inline-block;
   box-shadow: 0 2px 16px 0 rgba(0,0,0,0.2), 0 2px 20px 0 rgba(0,0,0,0.19);
-  border: 3px solid rgb(254,185,45);
-  border-radius: 5px;
-  padding: 5px 10px;
-  margin: 5px;
-}
-
-.playerSelect-player {
-  cursor: pointer;
-  font-family: Bungee, cursive;
-  font-size: 20px;
-  line-height: 25px;
-  display: inline-block;
-  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.2), 0 2px 20px 0 rgba(0,0,0,0.19);
   border-width: 3px;
   border-style: solid;
   border-radius: 5px;
   padding: 5px 10px;
   margin: 5px 10px;
-  transition: .15s;
+  transition: .35s;
   background-color: white;
+  -webkit-font-smoothing: antialiased;
 }
 
 .playerSelect-player:hover {

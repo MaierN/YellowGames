@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import Turn from './Turn.jsx';
+
 import wsMgr from '../../../js/wsMgr.js';
 
 class ConnectFour extends Component {
@@ -17,6 +19,14 @@ class ConnectFour extends Component {
       ],
       yourTurn: props.initialInfos.yourTurn,
     };
+
+    this.svgGrid = [];
+    for (let i = 0; i < 8; i++) {
+      this.svgGrid.push(<rect key={"a" + i} x={i * 88} y="0" width="8" height="536" style={styles.separator}/>);
+    }
+    for (let i = 0; i < 7; i++) {
+      this.svgGrid.push(<rect key={"b" + i} x="0" y={i * 88} width="624" height="8" style={styles.separator}/>);
+    }
 
     this.handleClickCol = this.handleClickCol.bind(this);
   }
@@ -50,66 +60,66 @@ class ConnectFour extends Component {
     const buttonsComp = [];
     for (let i = 0; i < 7; i++) {
       const disabled = !yourTurn || grid[0][i] !== "";
-      buttonsComp.push(<div key={i} style={styles.button}>{disabled ? (
-        <button disabled={true}>▼</button>
-      ) : (
-        <button onClick={e => this.handleClickCol(e, i)} style={styles.clickable}>▼</button>
-      )}</div>);
+
+      buttonsComp.push(
+        !disabled
+        ? (
+          <g key={i} className="connectFour-button connectFour-buttonClickable" style={{cursor: "pointer"}} onClick={e => this.handleClickCol(e, i)}>
+            <rect key={i} x={i * 88 + 8} y="0" width="80" height="100%" fill="transparent"/>
+            <line x1={i*88+28} y1={20} x2={i*88+48} y2={40} strokeLinecap="round" stroke="#555555" style={{strokeWidth: "10"}}/>
+            <line x1={i*88+68} y1={20} x2={i*88+48} y2={40} strokeLinecap="round" stroke="#555555" style={{strokeWidth: "10"}}/>
+          </g>
+        )
+        : (
+          <g key={i} className="connectFour-button">
+            <rect key={i} x={i * 88 + 8} y="0" width="80" height="100%" fill="transparent"/>
+            <line x1={i*88+28} y1={20} x2={i*88+48} y2={40} strokeLinecap="round" stroke="#999999" style={{strokeWidth: "10"}}/>
+            <line x1={i*88+68} y1={20} x2={i*88+48} y2={40} strokeLinecap="round" stroke="#999999" style={{strokeWidth: "10"}}/>
+          </g>
+        )
+      );
     }
 
     const gridComp = [];
     for (let i = 0; i < 6; i++) {
-      const rowComp = [];
       for (let j = 0; j < 7; j++) {
-        rowComp.push(<div key={j} style={styles.cell}>{grid[i][j]}</div>);
+        switch(grid[i][j]) {
+          case "o":
+          gridComp.push(<circle key={i + "-" + j + "-o"} className="ticTacToe-fadeIn" cx={j*88+48} cy={i*88+48} r="25" strokeWidth="10" fill="transparent"/>);
+          break;
+
+          case "x":
+          gridComp.push(<line key={i + "-" + j + "-x1"} className="ticTacToe-fadeIn" x1={j*88+23} y1={i*88+23} x2={j*88+73} y2={i*88+73} style={{strokeWidth: "10"}}/>);
+          gridComp.push(<line key={i + "-" + j + "-x2"} className="ticTacToe-fadeIn" x2={j*88+23} y1={i*88+23} x1={j*88+73} y2={i*88+73} style={{strokeWidth: "10"}}/>);
+          break;
+
+          default: break;
+        }
       }
-      gridComp.push(<div key={i} style={styles.row}>{rowComp}</div>);
     }
 
     return (
-      <div style={styles.grid}>
-        <div>{yourTurn ? "Your turn!" : "Opponent is playing..."}</div>
-        <div style={styles.buttonsContainer}>{buttonsComp}</div>
-        {gridComp}
+      <div>
+        <div>
+          <Turn yourTurn={yourTurn}></Turn>
+        </div>
+        <svg style={{marginTop: "25px", width: "100%", maxWidth: "400px", display: "block", marginLeft: "auto", marginRight: "auto"}} viewBox="0 0 624 60">
+          {buttonsComp}
+        </svg>
+        <svg style={{width: "100%", maxWidth: "400px", display: "block", marginLeft: "auto", marginRight: "auto"}} viewBox="0 0 624 536">
+          {this.svgGrid}
+          {gridComp}
+        </svg>
       </div>
     );
   }
 }
 
 const styles = {
-  cell: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "35px",
-    border: "1px solid black",
-    height: "50px",
-    width: "50px",
-    cursor: "default",
-  },
-  row: {
-    display: "flex",
-    flexDirection: "row",
-  },
-  grid: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  buttonsContainer: {
-    display: "flex",
-    flexDirection: "row",
-  },
-  button: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "20px",
-    border: "1px solid white",
-    height: "50px",
-    width: "50px",
-  },
-  clickable: {
-    cursor: "pointer",
+  separator: {
+    fill: "rgb(254,185,45)",
+    rx: "4",
+    ry: "4",
   },
 };
 

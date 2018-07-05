@@ -65,16 +65,16 @@
 
 .turn-text {
   font-family: Bungee, cursive;
-  font-size: 25px;
-  line-height: 25px;
+  font-size: 33px;
+  line-height: 33px;
   color: rgb(254,165,73);
   transition: .35s;
 }
 
 .turn-textHighlight {
   color: white;
-  font-size: 25px;
-  line-height: 25px;
+  font-size: 33px;
+  line-height: 33px;
   cursor: normal;
 }
 
@@ -136,4 +136,16 @@
 @-o-keyframes fadein {
     from { stroke: white; }
     to   { stroke: #555555; }
+}
+
+.connectFour-button>line {
+  transition: .2s;
+}
+
+.connectFour-buttonClickable:hover>line {
+  -webkit-transform: translate(0px,15px);;     /* Chrome and other webkit browsers */
+  -moz-transform: translate(0px,15px);;        /* FF */
+  -o-transform: translate(0px,15px);;          /* Opera */
+  -ms-transform: translate(0px,15px);;         /* IE9 */
+  transform: translate(0px,15px);;             /* W3C compliant browsers */
 }
