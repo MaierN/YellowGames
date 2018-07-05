@@ -180,3 +180,7 @@ button:focus {
     background-color: white;
     color: rgb(254,165,73);
 }
+
+body {
+  overflow-wrap: break-word;
+}
