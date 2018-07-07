@@ -5,6 +5,7 @@
   font-size: 25px;
   line-height: 30px;
   margin: 5px 15px 15px 15px;
+  color: #333333;
 }
 
 .gamePlay-titleBig {
@@ -108,33 +109,61 @@
        -o-animation: fadein .6s; /* Opera < 12.1 */
           animation: fadein .6s;
 }
-
 @keyframes fadein {
     from { stroke: white; }
     to   { stroke: #555555; }
 }
-
 /* Firefox < 16 */
 @-moz-keyframes fadein {
     from { stroke: white; }
     to   { stroke: #555555; }
 }
-
 /* Safari, Chrome and Opera > 12.1 */
 @-webkit-keyframes fadein {
     from { stroke: white; }
     to   { stroke: #555555; }
 }
-
 /* Internet Explorer */
 @-ms-keyframes fadein {
     from { stroke: white; }
     to   { stroke: #555555; }
 }
-
 /* Opera < 12.1 */
 @-o-keyframes fadein {
     from { stroke: white; }
+    to   { stroke: #555555; }
+}
+
+.battleship-fadeIn {
+  stroke: #555555;
+  -webkit-animation: bfadein .6s; /* Safari, Chrome and Opera > 12.1 */
+     -moz-animation: bfadein .6s; /* Firefox < 16 */
+      -ms-animation: bfadein .6s; /* Internet Explorer */
+       -o-animation: bfadein .6s; /* Opera < 12.1 */
+          animation: bfadein .6s;
+}
+@keyframes bfadein {
+    from { stroke: transparent; }
+    to   { stroke: #555555; }
+}
+/* Firefox < 16 */
+@-moz-keyframes bfadein {
+    from { stroke: transparent; }
+    to   { stroke: #555555; }
+}
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes bfadein {
+    from { stroke: transparent; }
+    to   { stroke: #555555; }
+}
+/* Internet Explorer */
+@-ms-keyframes bfadein {
+    from { stroke: transparent; }
+    to   { stroke: #555555; }
+}
+/* Opera < 12.1 */
+@-o-keyframes bfadein {
+    from { stroke: transparent; }
     to   { stroke: #555555; }
 }
 
@@ -148,4 +177,73 @@
   -o-transform: translate(0px,15px);;          /* Opera */
   -ms-transform: translate(0px,15px);;         /* IE9 */
   transform: translate(0px,15px);;             /* W3C compliant browsers */
+}
+
+.battleship-separator {
+  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.2), 0 2px 20px 0 rgba(0,0,0,0.19);
+  margin-top: 15px;
+}
+
+.battleship-title {
+  color: #333333;
+  font-family: Bungee, cursive;
+  font-size: 25px;
+  line-height: 25px;
+  margin-top: 30px;
+  margin-bottom: 5px;
+}
+
+@media (min-width:601px) {
+  .battleship-mainContainer {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+@media (max-width:600px) {
+  .battleship-mainContainer {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .battleship-mainContainer>div {
+    padding: 0px !important;
+  }
+}
+
+.battleship-placeButton {
+  background-color: rgb(254,165,73);
+  color: white;
+  border: 2px solid white;
+  padding: 3px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  line-height: 15px;
+  -webkit-transition-duration: 0.2s; /* Safari */
+  transition-duration: 0.2s;
+  cursor: pointer;
+  border-radius: 6px;
+  font-family: Bungee, cursive;
+  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.2), 0 2px 20px 0 rgba(0,0,0,0.19);
+}
+
+.battleship-placeButton:hover {
+    background-color: white;
+    color: rgb(254,165,73);
+}
+
+.battleship-placeButtonDisabled, .battleship-placeButtonDisabled:hover {
+  filter: brightness(70%);
+  cursor: default;
+  background-color: rgb(254,165,73);
+  color: white;
+}
+
+.battleship-verticalCheckbox {
+  height: 35px;
+  width: 35px;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: .5s;
 }

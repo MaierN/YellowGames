@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import Turn from './Turn.jsx';
+
 import wsMgr from '../../../js/wsMgr.js';
 
 class Battleship extends Component {
@@ -70,20 +72,20 @@ class Battleship extends Component {
       yourTurn: props.initialInfos.yourTurn,
       phase: 0,
       boats: {
-        1: {placed: false, size: 5, hits: 0},
-        2: {placed: false, size: 4, hits: 0},
-        3: {placed: false, size: 3, hits: 0},
-        4: {placed: false, size: 3, hits: 0},
-        5: {placed: false, size: 2, hits: 0},
+        1: {placed: false, size: 5, hits: 0, name: "Carrier"},
+        2: {placed: false, size: 4, hits: 0, name: "Battleship"},
+        3: {placed: false, size: 3, hits: 0, name: "Cruiser"},
+        4: {placed: false, size: 3, hits: 0, name: "Submarine"},
+        5: {placed: false, size: 2, hits: 0, name: "Destroyer"},
       },
       selection: null,
       rotated: false,
       ennemyBoats: {
-        1: {placed: false, size: 5, sunk: false},
-        2: {placed: false, size: 4, sunk: false},
-        3: {placed: false, size: 3, sunk: false},
-        4: {placed: false, size: 3, sunk: false},
-        5: {placed: false, size: 2, sunk: false},
+        1: {placed: false, size: 5, sunk: false, name: "Carrier"},
+        2: {placed: false, size: 4, sunk: false, name: "Battleship"},
+        3: {placed: false, size: 3, sunk: false, name: "Cruiser"},
+        4: {placed: false, size: 3, sunk: false, name: "Submarine"},
+        5: {placed: false, size: 2, sunk: false, name: "Destroyer"},
       },
       ennemyHoverX: null,
       ennemyHoverY: null,
@@ -231,104 +233,158 @@ class Battleship extends Component {
   render() {
     const { grid, hits, phase, boats, yourTurn, selection, hover, rotated, ennemyBoats, ennemyGrid, ennemyHits, ennemyHoverX, ennemyHoverY } = this.state;
 
-    const yourGridComp = [];
+    const yourGridT = [];
     for (let i = 0; i < 10; i++) {
-      const rowComp = [];
+      const rowT = [];
       for (let j = 0; j < 10; j++) {
-        const style = grid[i][j] === "" ? (hover[i][j] === "" ? styles.cellWater : styles.cellHover) : ennemyHits[i][j] === "" ? styles.cellBoat : styles.cellHit;
-        rowComp.push(
-          <div
-            key={j}
-            style={{...styles.cell, ...style, ...(selection && phase === 0 ? styles.clickableCell : {})}}
-            onClick={!selection || phase !== 0 ? () => {} : e => this.handleClickYourGrid(e, i, j)}
-            onMouseOver={e => this.handleHoverYourGrid(e, i, j)}>
-            {ennemyHits[i][j]}
-          </div>);
+        rowT.push({
+          color: (grid[i][j] === "" ? (hover[i][j] === "" ? styles.cellWater : styles.cellHover) : ennemyHits[i][j] === "" ? styles.cellBoat : styles.cellHit).backgroundColor,
+          cursor: selection && phase === 0 ? "pointer" : "default",
+          content: ennemyHits[i][j],
+          onClick: !selection || phase !== 0 ? () => {} : e => this.handleClickYourGrid(e, i, j),
+          onMouseOver: e => this.handleHoverYourGrid(e, i, j),
+        });
       }
-      yourGridComp.push(<div key={i} style={styles.row}>{rowComp}</div>);
+      yourGridT.push(rowT);
     }
 
     const yourBoatsComp = [];
     for (let i = 1; i <= 5; i++) {
       const clickable = !boats[i].placed && selection !== i;
       yourBoatsComp.push(
-        <div key={i}>
-          {boats[i].size + ": "}
-          {phase === 0 ? (
-            <button
-              disabled={!clickable}
-              onClick={!clickable ? () => {} : e => this.handleClickPlace(e, i)}>
-              {boats[i].placed ? "Placed..." : selection === i ? "Selected..." : "Place!"}
-            </button>
-          ) : (
-            boats[i].hits < boats[i].size ? "Alive!" : "Sunk..."
-          )}
-        </div>
+        <tr key={i}>
+          <td style={{textAlign: "right"}}>{boats[i].name + " (" + boats[i].size + (phase === 1 ? " - " + boats[i].hits : "") + "): "}</td>
+          <td style={{textAlign: "left"}}>
+            {phase === 0 ? (
+              <button
+                className={"battleship-placeButton" + (clickable ? "" : " battleship-placeButtonDisabled")}
+                disabled={!clickable}
+                onClick={!clickable ? () => {} : e => this.handleClickPlace(e, i)}>
+                {boats[i].placed ? "Placed..." : selection === i ? "Selected..." : "Place!"}
+              </button>
+            ) : (
+              boats[i].hits < boats[i].size ? "Alive!" : "Sunk..."
+            )}
+          </td>
+        </tr>
       );
     }
 
-    const ennemyGridComp = [];
+    const ennemyGridT = [];
     for (let i = 0; i < 10; i++) {
-      const rowComp = [];
+      const rowT = [];
       for (let j = 0; j < 10; j++) {
-        const style = hits[i][j] === "" ? (phase === 1 && yourTurn && i === ennemyHoverX && j === ennemyHoverY ? styles.cellAttack : {}) : ennemyGrid[i][j] === "" ? styles.cellWater : styles.cellHit;
-        rowComp.push(
-          <div
-            key={j}
-            style={{...styles.cell, ...style, ...(phase === 1 && yourTurn && hits[i][j] === "" ? styles.clickableCell : {})}}
-            onClick={phase === 0 || !yourTurn || hits[i][j] !== "" ? () => {} : e => this.handleClickEnnemyGrid(e, i, j)}
-            onMouseOver={e => this.handleHoverEnnemyGrid(e, i, j)}>
-            {hits[i][j]}
-          </div>);
+        rowT.push({
+          color: (hits[i][j] === "" ? (phase === 1 && yourTurn && i === ennemyHoverX && j === ennemyHoverY ? styles.cellAttack : {backgroundColor: "white"}) : ennemyGrid[i][j] === "" ? styles.cellWater : styles.cellHit).backgroundColor,
+          cursor: phase === 1 && yourTurn && hits[i][j] === "" ? "pointer" : "default",
+          content: hits[i][j],
+          onClick: phase === 0 || !yourTurn || hits[i][j] !== "" ? () => {} : e => this.handleClickEnnemyGrid(e, i, j),
+          onMouseOver: e => this.handleHoverEnnemyGrid(e, i, j),
+        });
       }
-      ennemyGridComp.push(<div key={i} style={styles.row}>{rowComp}</div>);
+      ennemyGridT.push(rowT);
     }
 
     const ennemyBoatsComp = [];
     for (let i in ennemyBoats) {
-      ennemyBoatsComp.push(<div key={i}>{ennemyBoats[i].size + ": " + (!ennemyBoats[i].placed ? "Not placed..." : !ennemyBoats[i].sunk ? (phase === 0 ? "Placed" : "Alive...") : "Sunk!")}</div>);
+      ennemyBoatsComp.push(
+        <tr key={i}>
+          <td style={{textAlign: "right"}}>{ennemyBoats[i].name + " (" + ennemyBoats[i].size + "): "}</td>
+          <td style={{textAlign: "left"}}>{(!ennemyBoats[i].placed ? "Not placed..." : !ennemyBoats[i].sunk ? (phase === 0 ? "Placed" : "Alive...") : "Sunk!")}</td>
+        </tr>
+      );
     }
 
     return (
       <div>
-        <div>{phase === 0 ? "Place your ships !" : yourTurn ? "Your turn!" : "Opponent is playing..."}</div>
-        <div>Ennemy side:</div>
         <div>
-          <div style={{display: "flex", flexDirection: "row"}}>
-            <div style={{display: "flex", flexDirection: "column"}} onMouseLeave={e => this.handleHoverEnnemyGrid(e, null, null)}>{ennemyGridComp}</div>
-            <div style={{flexGrow: 1}}></div>
-          </div>
-          <div>{ennemyBoatsComp}</div>
+          <Turn yourTurn={yourTurn} text={phase === 0 ? "Place your ships!" : null}></Turn>
         </div>
-        <div>Your side:</div>
-        <div>
-          <div style={{display: "flex", flexDirection: "row"}}>
-            <div style={{display: "flex", flexDirection: "column"}} onMouseLeave={e => this.handleHoverYourGrid(e, null, null)}>{yourGridComp}</div>
-            <div style={{flexGrow: 1}}></div>
-          </div>
-          <div>
-            <div>{yourBoatsComp}</div>
+        <div className="battleship-mainContainer">
+          <div style={{flexBasis: "calc(50% - 1px)", flexGrow: "0", flexShrink: "0", paddingRight: "7.5px", boxSizing: "border-box"}}>
             <div>
-              <label>Vertical: <input type="checkbox" checked={rotated} onChange={this.handleChangeRotated}></input></label>
+              <div className="battleship-title">Your side:</div>
+              <div onMouseLeave={e => this.handleHoverYourGrid(e, null, null)}>{this.renderGrid(yourGridT)}</div>
+              <table style={{margin: "10px auto", color: "#333333", fontFamily: "Montserrat, sans-serif", fontWeight: "bold", fontSize: "18px"}}>
+                <tbody>
+                  {yourBoatsComp}
+                </tbody>
+              </table>
+              {phase === 1 ? null : (
+                <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: "5px"}}>
+                  <span style={{color: "#333333", fontFamily: "Montserrat, sans-serif", fontWeight: "bold", fontSize: "23px"}}>Place vertically:</span>
+                  <input className="battleship-verticalCheckbox" type="checkbox" checked={rotated} onChange={this.handleChangeRotated}></input>
+                </div>
+              )}
+            </div>
+          </div>
+          <div style={{flexBasis: "2px", flexGrow: "0", flexShrink: "0", backgroundColor: "rgb(254,185,45)", borderRadius: "1px"}} className="battleship-separator"></div>
+          <div style={{flexBasis: "calc(50% - 1px)", flexGrow: "0", flexShrink: "0", paddingLeft: "7.5px", boxSizing: "border-box"}}>
+            <div>
+              <div className="battleship-title">Ennemy side:</div>
+              <div onMouseLeave={e => this.handleHoverEnnemyGrid(e, null, null)}>{this.renderGrid(ennemyGridT)}</div>
+              <table style={{margin: "10px auto", color: "#333333", fontFamily: "Montserrat, sans-serif", fontWeight: "bold", fontSize: "18px"}}>
+                <tbody>
+                  {ennemyBoatsComp}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
     );
   }
+
+  renderGrid(t) {
+    const { phase } = this.state;
+
+    const elems = [];
+    for (let i = 0; i < t.length; i++) {
+      for (let j = 0; j < t.length; j++) {
+        elems.push(
+          <rect
+            key={i + "-" + j}
+            x={j * 22 + 2}
+            y={i * 22 + 2}
+            width="20"
+            height="20"
+            rx="2"
+            ry="2"
+            style={{fill: t[i][j].color, transition: phase === 0 ? "0s" : ".15s"}}
+            />
+        );
+
+        if (t[i][j].content) {
+          elems.push(<line key={i + "-" + j + "-x1"} className="battleship-fadeIn" x1={j*22+6} y1={i*22+6} x2={j*22+18} y2={i*22+18} style={{strokeWidth: "2"}}/>);
+          elems.push(<line key={i + "-" + j + "-x2"} className="battleship-fadeIn" x2={j*22+6} y1={i*22+6} x1={j*22+18} y2={i*22+18} style={{strokeWidth: "2"}}/>);
+        }
+
+        elems.push(
+          <rect
+            key={i + "-" + j + "-a"}
+            x={j * 22 + 1}
+            y={i * 22 + 1}
+            width="22"
+            height="22"
+            style={{cursor: t[i][j].cursor, fill: "transparent"}}
+            onClick={t[i][j].onClick}
+            onMouseOver={t[i][j].onMouseOver}
+            />
+        );
+      }
+    }
+
+
+    return (
+      <svg style={{width: "300px", maxWidth: "100%"}} viewBox="0 0 222 222">
+        <rect x="0" y="0" width="100%" height="100%" fill="rgb(254,185,45)" rx="4" ry="4"/>
+        {elems}
+      </svg>
+    );
+  }
 }
 
 const styles = {
-  cell: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "15px",
-    border: "1px solid black",
-    height: "20px",
-    width: "20px",
-    cursor: "default",
-  },
   cellWater: {
     backgroundColor: "#82c6ff",
   },
@@ -343,13 +399,6 @@ const styles = {
   },
   cellAttack: {
     backgroundColor: "#c4c4c4",
-  },
-  clickableCell: {
-    cursor: "pointer",
-  },
-  row: {
-    display: "flex",
-    flexDirection: "row",
   },
 };
 

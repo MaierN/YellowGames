@@ -1,5 +1,5 @@
 
-const colors = ["#000000", "#8e0000", "#007a14", "#002e7a", "#6b007a"];
+const colors = ["#007a14", "#8aff42", "#41efff", "#9c56ff", "#fa7aff", "#ff6060", "#ffde23", "#38ffc0", "#ffbf37"];
 
 function getColor(id) {
   return colors[id % colors.length];

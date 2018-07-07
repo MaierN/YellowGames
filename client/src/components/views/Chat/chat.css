@@ -38,15 +38,15 @@
 
 .chat-messages>div>span:first-child {
   font-family: Bungee, cursive;
-  font-size: 15px;
-  line-height: 15px;
+  font-size: 19px;
+  line-height: 19px;
 }
 
 .chat-messages>div>span:not(:first-child) {
   font-family: Montserrat, sans-serif;
   color: #333333;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 21px;
 }
 
 .chat-messagesContainer {
@@ -99,7 +99,7 @@
 }
 
 .chat-subTitle {
-  color: #222222;
+  color: #333333;
   font-family: Montserrat, sans-serif;
   font-weight: bold;
   font-size: 25px;

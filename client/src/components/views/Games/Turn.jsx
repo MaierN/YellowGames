@@ -9,7 +9,13 @@ class Turn extends Component {
   }
 
   render() {
-    const { yourTurn } = this.props;
+    const { yourTurn, text } = this.props;
+
+    if (text) return (
+      <div className="turn-mainContainer">
+        <div className="turn-text turn-textHighlight">{text}</div>
+      </div>
+    );
 
     return (
       <div className="turn-mainContainer">

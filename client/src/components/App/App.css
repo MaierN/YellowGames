@@ -115,6 +115,11 @@ button:focus {
     outline: none;
 }
 
+* {
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: #aaaaaa;
     opacity: 1; /* Firefox */
@@ -126,7 +131,7 @@ button:focus {
     color: #aaaaaa;
 }
 
-@media (min-width:801px) {
+@media (min-width:941px) {
   .app-mainContainer {
     display: flex;
     flex-direction: row;
@@ -144,7 +149,7 @@ button:focus {
   }
 }
 
-@media (max-width:800px) {
+@media (max-width:940px) {
   .app-mainContainer {
     display: flex;
     flex-direction: column-reverse;

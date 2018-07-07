@@ -119,14 +119,7 @@ class App extends Component {
   }
 
   render() {
-    let { loaded, loggedIn, inGame, endMessage, id } = this.state;
-    /*loggedIn = "User";
-    inGame = {
-      username: "User2",
-      name: "ConnectFour",
-      initialInfos: {},
-      id: 23,
-    };*/
+    const { loaded, loggedIn, inGame, endMessage, id } = this.state;
 
     if (!loaded) return (
       <div className="loader-container">

@@ -7,7 +7,7 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      username: "",
+      username: localStorage.getItem("lastUsername") || "",
       unexpectedError: false,
       lengthError: false,
     };
@@ -35,6 +35,8 @@ class Login extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const {username} = this.state;
+
+    localStorage.setItem("lastUsername", username);
 
     if (username.length < 4 || username.length > 20) {
       this.setState({lengthError: true});

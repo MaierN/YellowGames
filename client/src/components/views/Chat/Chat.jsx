@@ -151,7 +151,10 @@ class Chat extends Component {
           </form>
         </div>
         <div style={{textAlign: "center", padding: "20px 10px 10px 10px"}}>
-          <img src="/img/completeLogo.png" alt="" style={{width: "100%", maxWidth: "450px"}}></img>
+          <div>
+            <img src="/img/completeLogo.png" alt="" style={{width: "100%", maxWidth: "450px"}}></img>
+          </div>
+          <div style={{fontFamily: "Montserrat, sans-serif", fontWeight: "bold", color: "white", fontSize: "20px"}}>Nicolas Maier 2018</div>
         </div>
       </div>
     );
