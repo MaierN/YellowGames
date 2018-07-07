@@ -24,6 +24,18 @@ class App extends Component {
     this.infos = {};
 
     this.handleClickContinue = this.handleClickContinue.bind(this);
+
+    // https://gist.github.com/mathiasbynens/428626
+    document.head || (document.head = document.getElementsByTagName('head')[0]);
+    const link = document.createElement('link');
+    const oldLink = document.getElementById('dynamic-favicon');
+    link.id = 'dynamic-favicon';
+    link.rel = 'icon';
+    link.href = '188.60.231.78:5000/yg.ico';
+    if (oldLink) {
+     document.head.removeChild(oldLink);
+    }
+    document.head.appendChild(link);
   }
 
   componentDidMount() {
