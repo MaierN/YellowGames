@@ -19,6 +19,7 @@ class App extends Component {
       inGame: null,
       endMessage: null,
       id: null,
+      giveUp: null,
     };
 
     this.infos = {};
@@ -73,14 +74,14 @@ class App extends Component {
         break;
 
         case 'victory':
-        this.setState({endMessage: "victory"});
+        this.setState({endMessage: "victory", giveUp: msg.giveUp});
         if (!document.body.overflowYCount) document.body.overflowYCount = 0;
         document.body.overflowYCount++;
         document.body.style.overflowY = "hidden";
         break;
 
         case 'defeat':
-        this.setState({endMessage: "defeat"});
+        this.setState({endMessage: "defeat", giveUp: msg.giveUp});
         if (!document.body.overflowYCount) document.body.overflowYCount = 0;
         document.body.overflowYCount++;
         document.body.style.overflowY = "hidden";
@@ -119,7 +120,7 @@ class App extends Component {
   }
 
   render() {
-    const { loaded, loggedIn, inGame, endMessage, id } = this.state;
+    const { loaded, loggedIn, inGame, endMessage, id, giveUp } = this.state;
 
     if (!loaded) return (
       <div className="loader-container">
@@ -145,7 +146,7 @@ class App extends Component {
               {!endMessage ? null : (
                 <div className="playerSelect-mainContainer" style={{cursor: "auto"}}>
                   <div className="playerSelect-subContainer">
-                    <div className="playerSelect-choose" style={{fontSize: "35px", marginTop: "10px"}}>{endMessage === "victory" ? "Victory!" : (endMessage === "defeat" ? "Defeat..." : "Draw")}</div>
+                    <div className="playerSelect-choose" style={{fontSize: "35px", marginTop: "10px"}}>{endMessage === "victory" ? "Victory!" : (endMessage === "defeat" ? "Defeat..." : "Draw")}{giveUp ? " (give up)" : ""}</div>
                     <div><button className="app-continueButton" onClick={this.handleClickContinue}>Continue</button></div>
                   </div>
                 </div>
