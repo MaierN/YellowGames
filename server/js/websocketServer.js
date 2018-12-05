@@ -106,6 +106,7 @@ function handleMessage(messageData, connection) {
     if (valid) {
       connection.loggedIn = data.username;
       updatePlayer(connection.clientId, true);
+      log("Login success for " + connection.clientIP + " (" + data.username + ")");
       connection.sendCustom({
         type: 'login',
         request: 'loginSuccess',
@@ -201,6 +202,8 @@ function handleMessage(messageData, connection) {
     if (connection.gameState !== -2) return;
     connection.gameState = connection.askGameName;
     connectedClients[connection.askGameEnnemy].gameState = connection.askGameName;
+
+    log("Game of " + connection.askGameName + " started (" + connection.clientIP + " - " + connectedClients[connection.askGameEnnemy].clientIP + ", " + connection.loggedIn + " - " + connectedClients[connection.askGameEnnemy].loggedIn + ")");
 
     const playState = {name: connection.askGameName};
     const initialInfosP1 = {};
@@ -468,6 +471,8 @@ websocketServer.on('request', request => {
 
   // Lorsque la connexion est fermée...
   connection.on('close', (reasonCode, description) => {
+    log("Connection closed from " + connection.clientIP + "(" + connection.loggedIn + ")");
+
     if (connection.gameState === -1) {
       connectedClients[connection.askGameEnnemy].gameState = 0;
       connectedClients[connection.askGameEnnemy].sendCustom({
@@ -508,6 +513,8 @@ websocketServer.on('request', request => {
   nextClientId++;
   connection.clientIP = request.socket.remoteAddress.split("::ffff:").join("");
   connection.gameState = 0;
+
+  log("Connection from " + connection.clientIP);
 
   // Et on lui envoie les données initiales
   connection.sendCustom({
