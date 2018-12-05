@@ -95,9 +95,10 @@ function handleMessage(messageData, connection) {
     case 'login':
     if (connection.loggedIn) return;
     let valid = true;
-    if (typeof data.username !== "string") valid = false;
-    if (data.username.length < 4 || data.username.length > 20) valid = false;
-    for (let clientId in connectedClients) {
+	if (!data) valid = false;
+    else if (typeof data.username !== "string") valid = false;
+    else if (data.username.length < 4 || data.username.length > 20) valid = false;
+    else for (let clientId in connectedClients) {
       if (connectedClients[clientId].loggedIn === data.username) {
         valid = false;
         break;
@@ -148,6 +149,9 @@ function handleMessage(messageData, connection) {
     case 'askGame':
     if (!connection.loggedIn) return;
     if (connection.gameState !== 0) return;
+	if (!data) return;
+	if (!data.id) return;
+	if (!data.name) return;
     if (!connectedClients[data.id] || connectedClients[data.id].gameState !== 0) return;
     if (!games[data.name]) return;
     if (connection.clientId == data.id) return;
@@ -385,6 +389,7 @@ function handleMessage(messageData, connection) {
     case 'play':
     if (!connection.loggedIn) return;
     if (!games[connection.gameState]) return;
+	if (!data) return;
     switch (connection.gameState) {
       case 'TicTacToe':
       tictactoe.play(playStates[connection.clientId], data, connection);
@@ -424,6 +429,7 @@ function handleMessage(messageData, connection) {
 
     case 'chat':
     if (!connection.loggedIn) return;
+	if (!data) return;
     if (typeof data.text !== "string") return;
     if (data.text.length === 0) return;
     sendChat("message", { text: data.text.substring(0, 200), username: connection.loggedIn, id: connection.clientId });

@@ -8,10 +8,13 @@ function checkCoords(row, col) {
 function play(playState, data, connection) {
   const pn = connection === playState.p1 ? "P1" : "P2";
   const opn = connection === playState.p1 ? "P2" : "P1";
+  
+  if (!data.request) return;
 
   if (playState.phase === 0) {
     switch (data.request) {
       case "put":
+	  if (!data.selection) return;
       if (!playState["boats" + pn][data.selection]) return;
       if (playState["boats" + pn][data.selection].placed) return;
       if (!checkCoords(data.row, data.col)) return;
