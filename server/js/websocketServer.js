@@ -7,6 +7,7 @@ const games = {
   TicTacToe: "Tic Tac Toe",
   ConnectFour: "Connect Four",
   Battleship: "Battleship",
+  Tetrablocks: "Tetrablocks",
 };
 
 const playStates = {};
@@ -52,6 +53,7 @@ const config = require('./config.js');
 const tictactoe = require('./tictactoe.js');
 const connectfour = require('./connectfour.js');
 const battleship = require('./battleship.js');
+const tetrablocks = require('./tetrablocks.js');
 const bot = require('./bot.js');
 
 
@@ -150,9 +152,9 @@ function handleMessage(messageData, connection) {
     case 'askGame':
     if (!connection.loggedIn) return;
     if (connection.gameState !== 0) return;
-	if (!data) return;
-	if (!data.id) return;
-	if (!data.name) return;
+    if (!data) return;
+    if (!data.id) return;
+    if (!data.name) return;
     if (!connectedClients[data.id] || connectedClients[data.id].gameState !== 0) return;
     if (!games[data.name]) return;
     if (connection.clientId == data.id) return;
@@ -215,106 +217,141 @@ function handleMessage(messageData, connection) {
 
     switch (connection.askGameName) {
       case 'TicTacToe':
-      playState.grid = [
-        ["", "", ""],
-        ["", "", ""],
-        ["", "", ""],
-      ];
-      playState.x = connectedClients[connection.askGameEnnemy];
-      playState.o = connection;
-      playState.next = "x";
-      initialInfosP1.yourTurn = true;
-      initialInfosP2.yourTurn = false;
-      break;
+        playState.grid = [
+          ["", "", ""],
+          ["", "", ""],
+          ["", "", ""],
+        ];
+        playState.x = connectedClients[connection.askGameEnnemy];
+        playState.o = connection;
+        playState.next = "x";
+        initialInfosP1.yourTurn = true;
+        initialInfosP2.yourTurn = false;
+        break;
 
       case 'ConnectFour':
-      playState.grid = [
-        ["", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", ""],
-      ];
-      playState.x = connectedClients[connection.askGameEnnemy];
-      playState.o = connection;
-      playState.next = "x";
-      initialInfosP1.yourTurn = true;
-      initialInfosP2.yourTurn = false;
-      break;
+        playState.grid = [
+          ["", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", ""],
+        ];
+        playState.x = connectedClients[connection.askGameEnnemy];
+        playState.o = connection;
+        playState.next = "x";
+        initialInfosP1.yourTurn = true;
+        initialInfosP2.yourTurn = false;
+        break;
 
       case 'Battleship':
-      playState.gridP1 = [
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-      ];
-      playState.gridP2 = [
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-      ];
-      playState.hitsP1 = [
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-      ];
-      playState.hitsP2 = [
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-        ["", "", "", "", "", "", "", "", "", ""],
-      ];
-      playState.boatsP1 = {
-        1: {placed: false, size: 5, hits: 0},
-        2: {placed: false, size: 4, hits: 0},
-        3: {placed: false, size: 3, hits: 0},
-        4: {placed: false, size: 3, hits: 0},
-        5: {placed: false, size: 2, hits: 0},
-      };
-      playState.boatsP2 = {
-        1: {placed: false, size: 5, hits: 0},
-        2: {placed: false, size: 4, hits: 0},
-        3: {placed: false, size: 3, hits: 0},
-        4: {placed: false, size: 3, hits: 0},
-        5: {placed: false, size: 2, hits: 0},
-      };
-      playState.remainingP1 = 5;
-      playState.remainingP2 = 5;
-      playState.p1 = connectedClients[connection.askGameEnnemy];
-      playState.p2 = connection;
-      playState.phase = 0;
-      playState.next = "p1";
-      initialInfosP1.yourTurn = true;
-      initialInfosP2.yourTurn = false;
-      break;
+        playState.gridP1 = [
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+        ];
+        playState.gridP2 = [
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+        ];
+        playState.hitsP1 = [
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+        ];
+        playState.hitsP2 = [
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+          ["", "", "", "", "", "", "", "", "", ""],
+        ];
+        playState.boatsP1 = {
+          1: {placed: false, size: 5, hits: 0},
+          2: {placed: false, size: 4, hits: 0},
+          3: {placed: false, size: 3, hits: 0},
+          4: {placed: false, size: 3, hits: 0},
+          5: {placed: false, size: 2, hits: 0},
+        };
+        playState.boatsP2 = {
+          1: {placed: false, size: 5, hits: 0},
+          2: {placed: false, size: 4, hits: 0},
+          3: {placed: false, size: 3, hits: 0},
+          4: {placed: false, size: 3, hits: 0},
+          5: {placed: false, size: 2, hits: 0},
+        };
+        playState.remainingP1 = 5;
+        playState.remainingP2 = 5;
+        playState.p1 = connectedClients[connection.askGameEnnemy];
+        playState.p2 = connection;
+        playState.phase = 0;
+        playState.next = "p1";
+        initialInfosP1.yourTurn = true;
+        initialInfosP2.yourTurn = false;
+        break;
+
+      case 'Tetrablocks':
+          playState.gridP1 = (() => {
+            let grid = [];
+            for (let i = 0; i < 20; i++) {
+              let row = [];
+              for (let j = 0; j < 10; j++) {
+                row.push("");
+              }
+              grid.push(row);
+            }
+            return grid;
+          })();
+          playState.gridP2 = (() => {
+            let grid = [];
+            for (let i = 0; i < 20; i++) {
+              let row = [];
+              for (let j = 0; j < 10; j++) {
+                row.push("");
+              }
+              grid.push(row);
+            }
+            return grid;
+          })();
+          playState.pieceP1 = { shouldCreate: true };
+          playState.pieceP2 = { shouldCreate: true };
+          playState.lineSent = 0;
+          playState.p1 = connectedClients[connection.askGameEnnemy];
+          playState.p2 = connection;
+          playState.p1.currentPlayState = playState;
+          playState.p2.currentPlayState = playState;
+          playState.playDelay = 500;
+          playState.timeoutP1 = setTimeout(() => tetrablocks.play(playState, {command: "fastFall"}, playState.p1, true), 0);
+          playState.timeoutP2 = setTimeout(() => tetrablocks.play(playState, {command: "fastFall"}, playState.p2, true), 0);
+          break;
     }
 
     playStates[connection.clientId] = playState;
@@ -364,6 +401,7 @@ function handleMessage(messageData, connection) {
     case 'giveUp':
     if (!connection.loggedIn) return;
     if (!games[connection.gameState]) return;
+    connection.currentPlayState.ended = true;
     connection.gameState += "_1";
     connectedClients[connection.askGameEnnemy].gameState += "_1";
     connectedClients[connection.askGameEnnemy].sendCustom({
@@ -404,6 +442,10 @@ function handleMessage(messageData, connection) {
 
       case 'Battleship':
       battleship.play(playStates[connection.clientId], data, connection);
+      break;
+
+      case 'Tetrablocks':
+      tetrablocks.play(playStates[connection.clientId], data, connection);
       break;
     }
     break;
@@ -496,6 +538,7 @@ websocketServer.on('request', request => {
       updatePlayer(connection.askGameEnnemy, true);
     }
     if (typeof connection.gameState === "string" && !connection.gameState.endsWith("_1")) {
+      connection.currentPlayState.ended = true;
       connectedClients[connection.askGameEnnemy].gameState += "_1";
       connectedClients[connection.askGameEnnemy].sendCustom({
         type: 'game',

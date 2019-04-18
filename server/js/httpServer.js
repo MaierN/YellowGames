@@ -15,7 +15,7 @@ const server = http.createServer((req, res) => {
   req.url = req.url.split("?")[0];
 
   // On empêche l'utilisation des ".."
-  req.url = req.url.split("..").join(".");
+  req.url = req.url.split("..").join("");
 
   // On tente de lire le fichier demandé
   fs.readFile(httpFolderToServe + req.url, (err, data) => {
