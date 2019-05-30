@@ -82,64 +82,58 @@ const pieces = {
     ],
     "J": [
         [
-            [false, true , false, false],
-            [false, true , false, false],
-            [true , true , false, false],
-            [false, false, false, false],
-        ],
-        [
             [true , false, false, false],
             [true , true , true , false],
             [false, false, false, false],
             [false, false, false, false],
         ],
         [
-            [true , true , false, false],
-            [true , false, false, false],
-            [true , false, false, false],
+            [false, true , true , false],
+            [false, true , false, false],
+            [false, true , false, false],
             [false, false, false, false],
         ],
         [
+            [false, false, false, false],
             [true , true , true , false],
             [false, false, true , false],
             [false, false, false, false],
+        ],
+        [
+            [false, true , false, false],
+            [false, true , false, false],
+            [true , true , false, false],
             [false, false, false, false],
         ],
     ],
     "L": [
         [
-            [true , false, false, false],
-            [true , false, false, false],
-            [true , true , false, false],
-            [false, false, false, false],
-        ],
-        [
-            [true , true , true , false],
-            [true , false, false, false],
-            [false, false, false, false],
-            [false, false, false, false],
-        ],
-        [
-            [true , true , false, false],
-            [false, true , false, false],
-            [false, true , false, false],
-            [false, false, false, false],
-        ],
-        [
             [false, false, true , false],
             [true , true , true , false],
             [false, false, false, false],
+            [false, false, false, false],
+        ],
+        [
+            [false, true , false, false],
+            [false, true , false, false],
+            [false, true , true , false],
+            [false, false, false, false],
+        ],
+        [
+            [false, false, false, false],
+            [true , true , true , false],
+            [true , false, false, false],
+            [false, false, false, false],
+        ],
+        [
+            [true , true , false, false],
+            [false, true , false, false],
+            [false, true , false, false],
             [false, false, false, false],
         ],
     ],
     "I": [
         [
-            [false, true , false, false],
-            [false, true , false, false],
-            [false, true , false, false],
-            [false, true , false, false],
-        ],
-        [
             [false, false, false, false],
             [true , true , true , true ],
             [false, false, false, false],
@@ -156,6 +150,12 @@ const pieces = {
             [false, false, false, false],
             [true , true , true , true ],
             [false, false, false, false],
+        ],
+        [
+            [false, true , false, false],
+            [false, true , false, false],
+            [false, true , false, false],
+            [false, true , false, false],
         ],
     ],
     "T": [
@@ -219,7 +219,7 @@ function play(playState, data, connection, isAuto) {
         return;
     }
 
-    let oldR = piece.r;
+    const oldR = piece.r;
     switch (data.command) {
         case "left":
         piece.x--;
@@ -249,12 +249,42 @@ function play(playState, data, connection, isAuto) {
 
         case "rotateLeft":
         piece.r = (piece.r - 1 + 4) % 4;
-        if (!isPieceValid(grid, piece)) piece.r = oldR;
+        if (!isPieceValid(grid, piece)) {
+            piece.x++;
+            if (!isPieceValid(grid, piece)) {
+                piece.x--;
+                piece.y--;
+                if (piece.y < 0 || !isPieceValid(grid, piece)) {
+                    piece.y++;
+                    piece.x--;
+                    if (!isPieceValid(grid, piece)) {
+                        piece.x++;
+                        piece.r = oldR;
+                    }
+                } else {
+                    isAuto = true;
+                }
+            }
+        }
         break;
         
         case "rotateRight":
         piece.r = (piece.r + 1) % 4;
-        if (!isPieceValid(grid, piece)) piece.r = oldR;
+        if (!isPieceValid(grid, piece)) {
+            piece.x--;
+            if (!isPieceValid(grid, piece)) {
+                piece.x++;
+                piece.y--;
+                if (piece.y < 0 || !isPieceValid(grid, piece)) {
+                    piece.y++;
+                    piece.x++;
+                    if (!isPieceValid(grid, piece)) {
+                        piece.x--;
+                        piece.r = oldR;
+                    }
+                }
+            }
+        }
         break;
 
         default: break;
