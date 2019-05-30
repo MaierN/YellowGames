@@ -27,7 +27,6 @@ function playTicTacToe(bot) {
 }
 
 function playConnectFour(bot) {
-  let row;
   let col;
   do {
     col = Math.floor(Math.random() * 7);
@@ -93,6 +92,9 @@ const onMessage = {
         if (data.initialInfos.yourTurn) playConnectFour(bot);
       } else if (data.name === "Battleship") {
         // TODO strat battleship
+        bot.sendData({ request: "giveUp" });
+      } else if (data.name === "Tetrablocks") {
+        // TODO strat Tetrablocks
         bot.sendData({ request: "giveUp" });
       } else {
         console.log(bot.botName + " unknown game " + data.name);
