@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import TicTacToe from './TicTacToe.jsx';
 import ConnectFour from './ConnectFour.jsx';
 import Battleship from './Battleship.jsx';
-import Tetrablocks from './Tetrablocks.jsx';
+import Tetrablockz from './Tetrablockz.jsx';
 
 import wsMgr from '../../../js/wsMgr.js';
 import colors from '../../../js/colors.js';
@@ -52,9 +52,9 @@ class GamePlay extends Component {
       gameComponent = <Battleship initialInfos={inGame.initialInfos}></Battleship>
       break;
 
-      case "Tetrablocks":
-      title = "Tetrablocks";
-      gameComponent = <Tetrablocks initialInfos={inGame.initialInfos}></Tetrablocks>
+      case "Tetrablockz":
+      title = "Tetrablockz";
+      gameComponent = <Tetrablockz initialInfos={inGame.initialInfos}></Tetrablockz>
       break;
 
       default: break;

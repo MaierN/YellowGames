@@ -7,7 +7,7 @@ const games = {
   TicTacToe: "Tic Tac Toe",
   ConnectFour: "Connect Four",
   Battleship: "Battleship",
-  Tetrablocks: "Tetrablocks",
+  Tetrablockz: "Tetrablockz",
 };
 
 const playStates = {};
@@ -53,7 +53,7 @@ const config = require('./config.js');
 const tictactoe = require('./tictactoe.js');
 const connectfour = require('./connectfour.js');
 const battleship = require('./battleship.js');
-const tetrablocks = require('./tetrablocks.js');
+const tetrablockz = require('./tetrablockz.js');
 const bot = require('./bot.js');
 
 
@@ -318,7 +318,7 @@ function handleMessage(messageData, connection) {
         initialInfosP2.yourTurn = false;
         break;
 
-      case 'Tetrablocks':
+      case 'Tetrablockz':
           playState.gridP1 = (() => {
             let grid = [];
             for (let i = 0; i < 20; i++) {
@@ -349,8 +349,8 @@ function handleMessage(messageData, connection) {
           playState.p1.currentPlayState = playState;
           playState.p2.currentPlayState = playState;
           playState.playDelay = 500;
-          playState.timeoutP1 = setTimeout(() => tetrablocks.play(playState, {command: "fastFall"}, playState.p1, true), 0);
-          playState.timeoutP2 = setTimeout(() => tetrablocks.play(playState, {command: "fastFall"}, playState.p2, true), 0);
+          playState.timeoutP1 = setTimeout(() => tetrablockz.play(playState, {command: "fastFall"}, playState.p1, true), 0);
+          playState.timeoutP2 = setTimeout(() => tetrablockz.play(playState, {command: "fastFall"}, playState.p2, true), 0);
           break;
     }
 
@@ -444,8 +444,8 @@ function handleMessage(messageData, connection) {
       battleship.play(playStates[connection.clientId], data, connection);
       break;
 
-      case 'Tetrablocks':
-      tetrablocks.play(playStates[connection.clientId], data, connection);
+      case 'Tetrablockz':
+      tetrablockz.play(playStates[connection.clientId], data, connection);
       break;
     }
     break;

@@ -201,14 +201,14 @@ function play(playState, data, connection, isAuto) {
     if (piece.shouldCreate) {
         createPiece(piece);
         connection.sendCustom({
-            type: 'gameTetrablocks',
+            type: 'gameTetrablockz',
             data: {
                 grid: renderGrid(grid, piece, true),
                 incomingLines: isP1 ? (playState.lineSent < 0 ? -playState.lineSent : 0) : (playState.lineSent > 0 ? playState.lineSent : 0)
             }
         });
         otherConnection.sendCustom({
-            type: 'gameTetrablocks',
+            type: 'gameTetrablockz',
             data: {
                 otherGrid: renderGrid(grid, piece, false)
             }
@@ -329,20 +329,20 @@ function play(playState, data, connection, isAuto) {
     while (!isPieceValid(grid, piece)) piece.y--;
     
     connection.sendCustom({
-        type: 'gameTetrablocks',
+        type: 'gameTetrablockz',
         data: {
             grid: renderGrid(grid, piece, true),
             incomingLines: isP1 ? (playState.lineSent < 0 ? -playState.lineSent : 0) : (playState.lineSent > 0 ? playState.lineSent : 0)
         }
     });
     otherConnection.sendCustom({
-        type: 'gameTetrablocks',
+        type: 'gameTetrablockz',
         data: {
             otherGrid: renderGrid(grid, piece, false)
         }
     });
     (isP1 ? playState.p2 : playState.p1).sendCustom({
-        type: 'gameTetrablocks',
+        type: 'gameTetrablockz',
         data: {
             grid: renderGrid(otherGrid, otherPiece, true),
             incomingLines: !isP1 ? (playState.lineSent < 0 ? -playState.lineSent : 0) : (playState.lineSent > 0 ? playState.lineSent : 0)

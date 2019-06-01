@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import wsMgr from '../../../js/wsMgr.js';
 
-class Tetrablocks extends Component {
+class Tetrablockz extends Component {
   constructor(props) {
     super(props);
 
@@ -59,7 +59,7 @@ class Tetrablocks extends Component {
   }
 
   componentDidMount() {
-    this.gameSubscription = wsMgr.subscribe("gameTetrablocks", msg => {
+    this.gameSubscription = wsMgr.subscribe("gameTetrablockz", msg => {
       const data = msg.data;
       if (data.grid) {
         this.setState({ grid: data.grid, incomingLines: data.incomingLines });
@@ -70,7 +70,7 @@ class Tetrablocks extends Component {
   }
 
   componentWillUnmount() {
-    wsMgr.unsubscribe("gameTetrablocks", this.gameSubscription);
+    wsMgr.unsubscribe("gameTetrablockz", this.gameSubscription);
     document.removeEventListener("keydown", this.handleKeydown);
   }
 
@@ -222,4 +222,4 @@ class Tetrablocks extends Component {
   }
 }
 
-export default Tetrablocks;
+export default Tetrablockz;

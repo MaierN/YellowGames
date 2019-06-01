@@ -93,8 +93,8 @@ const onMessage = {
       } else if (data.name === "Battleship") {
         // TODO strat battleship
         bot.sendData({ request: "giveUp" });
-      } else if (data.name === "Tetrablocks") {
-        // TODO strat Tetrablocks
+      } else if (data.name === "Tetrablockz") {
+        // TODO strat Tetrablockz
         bot.sendData({ request: "giveUp" });
       } else {
         console.log(bot.botName + " unknown game " + data.name);
