@@ -401,7 +401,7 @@ function handleMessage(messageData, connection) {
     case 'giveUp':
     if (!connection.loggedIn) return;
     if (!games[connection.gameState]) return;
-    connection.currentPlayState.ended = true;
+    if (connection.currentPlayState) connection.currentPlayState.ended = true;
     connection.gameState += "_1";
     connectedClients[connection.askGameEnnemy].gameState += "_1";
     connectedClients[connection.askGameEnnemy].sendCustom({
@@ -538,7 +538,7 @@ websocketServer.on('request', request => {
       updatePlayer(connection.askGameEnnemy, true);
     }
     if (typeof connection.gameState === "string" && !connection.gameState.endsWith("_1")) {
-      connection.currentPlayState.ended = true;
+      if (connection.currentPlayState) connection.currentPlayState.ended = true;
       connectedClients[connection.askGameEnnemy].gameState += "_1";
       connectedClients[connection.askGameEnnemy].sendCustom({
         type: 'game',
