@@ -1,6 +1,6 @@
 {
-  "name": "yellowgames",
-  "version": "0.1.0",
+  "name": "yellowgamesclient",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "react": "^16.13.1",
@@ -11,6 +11,19 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "install": "react-scripts build"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
