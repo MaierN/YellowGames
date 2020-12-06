@@ -5,7 +5,7 @@ const subscriptions = {};
 let ws;
 
 function init() {
-  ws = new WebSocket('wss://' + window.location.host);
+  ws = new WebSocket((window.location.protocol === 'https:' ? 'wss://' : 'ws://') + window.location.host);
 
   ws.sendCustom = function(data) {
     ws.send(JSON.stringify(data));
