@@ -4,6 +4,7 @@
   "private": true,
   "description": "",
   "scripts": {
+    "build": "npm explore yellowgamesclient -- npm run build",
     "start": "node server/index.js"
   },
   "dependencies": {
